@@ -1,0 +1,86 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-用户注册</title>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+			<ul class="nav nav-pills">
+				<li class="active">
+					<a href="#">返回首页</a>
+				</li>
+				<li>
+					<a href="#">挂号服务</a>
+				</li>
+				<li>
+					<a href="#">预约管理</a>
+				</li>
+				<li>
+					<a href="#">最新资讯</a>
+				</li>
+				<li>
+					<a href="#">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{% if errors %}
+        {% for error in errors %}
+            <li>{{error}}</li>
+        {% endfor %}
+    {% endif %}
+	<div class="row-fluid">
+		<div class="span2">
+		</div>
+		<div class="span8">
+			<form name="input" action="/loginVerify/" method="post">
+				账　　号: <input type="text" name="userName">
+				<br>
+				密　　码: <input type="password" name="Password">
+				<br>
+				确认密码: <input type="password" name="confirmPassword">
+				<br>
+				用户类别:
+				<select size = "1" name = "serviceType">
+                    <option value = "2">普通用户</option>
+                    <option value = "1">医生</option>
+                </select>
+                <br>
+				<input type="submit" value="点击注册">
+				<a href="/mainInterface/">返回登录</a>
+			</form>
+		</div>
+		<div class="span2">
+		</div>
+	</div>
+	<hr/>
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-预约管理</title>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+
+			<table> 
+				<tr><td> <a href="/mainInterface/">{{logins}}</a></td>
+    				<td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+    				<td><a href="/signOut/">退出</a></td>
+   				</tr>
+   			</table>
+
+			<ul class="nav nav-pills">
+				<li>
+					<a href="/mainInterface/">返回首页</a>
+				</li>
+				<li>
+					<a href="#">挂号服务</a>
+				</li>
+				<li class="active">
+					<a href="#">预约管理</a>
+				</li>
+				<li>
+					<a href="#">最新资讯</a>
+				</li>
+				<li>
+					<a href="#">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+    <table align="center">
+        {% if deleteFlag %}
+            <p><tr align="center"><td>删除成功</tr></td></p>
+        {% endif %}
+    </table>
+
+    {% if doctorList %}
+	<div class="row-fluid">
+		<div class="span2">
+		</div>
+		<div class="span8">
+			<table class="table table-hover table-bordered">
+				<tr align="center"><td>
+                	<p>您共预约 {{ doctorList | length}} 位医生</p>
+            	</tr></td>
+				<thead>
+					<tr>
+						<th>
+							已预约医生
+						</th>
+						<th>
+							操作
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for doctor in doctorList %}
+	        		<tr>
+						<td>
+							<a href="/detailInformation/{{ doctor.userName }}/">{{ doctor.name }}</a>
+						</td>
+						<td>
+							<td><a href="/deleteDoctor/{{ doctor.userName }}/">取消挂号</a></td>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="span2">
+		</div>
+	</div>
+	<hr/>
+	{% else %}
+		<table align = "center">
+            <tr align = "center"><td><p><b><Font size = "4" color = "red">您还没有预约医生</Font></p></tr></td>
+        </table>
+    {% endif %}
+
+
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

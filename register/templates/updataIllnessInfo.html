@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>更新疾病信息</title>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p>更新疾病信息</p>
+	{%if updataSuccess%}
+		<p><div style = "color:red">更新{{illnessName}}成功</div></p>
+	{%endif%}
+		{% if errors0 %}
+			{%for error in errors0%}
+				<li>{{error}}</li>
+			{%endfor%}
+		{%endif%}
+	<form action = "/updataIllnessByName/" method = "post">
+		疾病名称<input type="text" name = "IllnessName"><input type="submit" value="点击查询">
+	</form>
+		{% if errors1 %}
+			{%for error in errors1%}
+				<li>{{error}}</li>
+			{%endfor%}
+		{%endif%}
+	<form action = "/updataIllnessByDivision/" method = "post">
+		所属科室：<select class = "txt-s" size = "1" name = "divisionType">
+						<option value = "00000">--无--</option>
+						{% if allDivisionList %}
+							{%for division in allDivisionList%}
+			                    <option value = {{division.divisionID}}>{{division.name}}</option>
+			                {%endfor%}
+		                {%endif%}
+	              </select>
+	              <input type="submit" value="点击查询">
+	</form>
+
+	<a href="/updataIllnessInfo/">所有疾病</a>
+
+	{%if deleteSuccess%}
+		<p>删除成功</p>
+	{%endif%}
+
+	{%if demandByIllness%}
+		<div class="row-fluid">
+			<div class="span2">
+			</div>
+			<div class="span8">
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>
+								疾病名称:
+							</th>
+							<th>
+								所属科室
+							</th>
+							<th>
+								点击操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+		        		<tr>
+							<td>
+								<a href="/illnessDetailInfo/{{Illness.name}}/">{{Illness.name}}</a>
+							</td>
+							<td>
+								{{Illness.division}}
+							</td>
+							<td>
+								<input type="button" name="submit" value="删除" class="btn" 
+									onClick="if (confirm('确认删除？')) 
+									location.href= '/deleteIllness/{{Illness.name}}/';
+									return false;" >
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="span2">
+			</div>
+		</div>
+	{%endif%}
+
+	{%if demandByDivision %}
+		<h3>"{{divisionName}}"的下属疾病</h3>
+		<div class="row-fluid">
+			<div class="span2">
+			</div>
+			<div class="span8">
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>
+								疾病名称:
+							</th>
+							<th>
+								所属科室
+							</th>
+							<th>
+								点击操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for illness in illnessList %}
+		        		<tr>
+							<td>
+								<a href="/illnessDetailInfo/{{illness.name}}/">{{illness.name}}</a>
+							</td>
+							<td>
+								{{illness.division}}
+							</td>
+							<td>
+								<input type="button" name="submit" value="删除" class="btn" 
+									onClick="if (confirm('确认删除？')) 
+									location.href= '/deleteIllness/{{illness.name}}/';
+									return false;" >
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="span2">
+			</div>
+		</div>
+	{%endif%}
+
+	{%if allIllnessList%}
+		<h3>全部疾病：</h3>
+		<div class="row-fluid">
+			<div class="span2">
+			</div>
+			<div class="span8">
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>
+								疾病名称:
+							</th>
+							<th>
+								所属科室
+							</th>
+							<th>
+								点击操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for illness in allIllnessList %}
+		        		<tr>
+							<td>
+								<a href="/illnessDetailInfo/{{illness.name}}/">{{illness.name}}</a>
+							</td>
+							<td>
+								{{illness.division}}
+							</td>
+							<td>
+								<input type="button" name="submit" value="删除" class="btn" 
+									onClick="if (confirm('确认删除？')) 
+									location.href= '/deleteIllness/{{illness.name}}/';
+									return false;" >
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="span2">
+			</div>
+		</div>
+	{%endif%}
+
+	
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>
