@@ -1,0 +1,121 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-医生列表</title>
+</head>
+<body>
+{%if loginDoctor%}
+	<p>欢迎您：{{loginDoctor.userName}}</a></p>
+	<p><a href="#">退出</a></p>
+{%endif%}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+			<ul class="nav nav-pills">
+				<li>
+					<a href="#">返回首页</a>
+				</li>
+				<li>
+					<a href="#">挂号服务</a>
+				</li>
+				<li class="active">
+					<a href="#">预约管理</a>
+				</li>
+				<li>
+					<a href="#">最新资讯</a>
+				</li>
+				<li>
+					<a href="#">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<h2>当前登录医生：{{doctor.name}}</h2>
+
+	<form  action="/updataDoctorInfoSuccess/" method="post">
+			用户名：{{doctor.userName}}<BR>
+					  <input type = "hidden"  name = "doctorUserName" value = {{doctor.userName}}>
+			密码：{{doctor.Password}}<BR>
+			          <input type = "hidden"  name = "doctorPassWord" value = {{doctor.Password}}>
+			{%if noName %}
+				<p><div style = "color:red">姓名为必选项</div><p>	
+			{%endif%}
+			姓名：<input type = "text"  name = "doctorName" value = {{doctor.name}}><br>
+
+	        年龄：<input type = "text"  name = "doctorAge" value = {{doctor.age}}><br>
+
+	        性别：
+	        	{%if flag%}
+	        		男性：<input type="radio" checked="checked" name="doctorSex" value="man" />
+	        		女性：<input type="radio" name="Sex" value="woman" />
+	        	{%else%}
+	        		{{doctor.sex}}
+	        	{%endif%}<br>
+	        电话：<input type = "text"  name = "doctorPhone" value = {{doctor.phoneNumber}}><br>
+	        简介：
+	        <textarea class = "vLargeTextField"  name = "doctorIntro" clos = "200" rows = "10">{{doctor.intro}}</textarea><br>
+	        科室：<select class = "txt-s" size = "1" name = "doctorDivision">
+						<option value = {{division.divisionID}}>{{division.name}}</option>
+						{% if allDivisionList %}
+							{%for division in allDivisionList%}
+			                    <option value = {{division.divisionID}}>{{division.name}}</option>
+			                {%endfor%}
+		                {%endif%}
+	              </select><br>
+	        上班时间：{{workday | length}}天<br>
+	        	{%for day in workday%}
+	        		<input type="checkbox"  checked="checked" name="doctorWorkTime" value = "{{day}}" />{{day}}<br>
+	        	{%endfor%}<br>
+
+	        待添加的上班时间：{{noWorkday | length}}天<br>
+	        	{%for day in noWorkday%}
+	        		<input type="checkbox" name="doctorNoWorkTime" value = "{{day}}" />{{day}}<br>
+	        	{%endfor%}
+
+		        {%if noUpperNum%}
+					<p><div style = "color:red">该项为必选</div><p>	
+				{%endif%}
+
+	        每天可预约的人数上限：
+	        		<select class = "txt-s" size = "1" name = "personUpper">
+						<option value = {{doctor.appointNum}}>{{doctor.appointNum}}人</option>
+						<option value = "5">5人</option>
+						<option value = "6">6人</option>
+						<option value = "7">7人</option>
+						<option value = "8">5人</option>
+						<option value = "9">9人</option>
+						<option value = "10">10人</option>
+	              </select><br>
+			<input type="submit" value="保存" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+	</form>
+
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

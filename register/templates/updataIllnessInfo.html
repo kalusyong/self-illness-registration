@@ -37,37 +37,37 @@
 		</div>
 	</div>
 	<center>
-		<h3>更新疾病信息</h3>
-				{%if updataSuccess%}
-			<p><div style = "color:red">更新{{illnessName}}成功</div></p>
+	<p>更新疾病信息</p>
+	{%if updataSuccess%}
+		<p><div style = "color:red">更新{{illnessName}}成功</div></p>
+	{%endif%}
+		{% if errors0 %}
+			{%for error in errors0%}
+				<li>{{error}}</li>
+			{%endfor%}
 		{%endif%}
-			{% if errors0 %}
-				{%for error in errors0%}
-					<li>{{error}}</li>
-				{%endfor%}
-			{%endif%}
-		<form action = "/updataIllnessByName/" method = "post">
-			疾病名称<input type="text" name = "IllnessName"><input type="submit" value="点击查询">
-		</form>
-			{% if errors1 %}
-				{%for error in errors1%}
-					<li>{{error}}</li>
-				{%endfor%}
-			{%endif%}
-		<form action = "/updataIllnessByDivision/" method = "post">
-			所属科室：<select class = "txt-s" size = "1" name = "divisionType">
-							<option value = "00000">--无--</option>
-							{% if allDivisionList %}
-								{%for division in allDivisionList%}
-				                    <option value = {{division.divisionID}}>{{division.name}}</option>
-				                {%endfor%}
-			                {%endif%}
-		              </select>
-		              <input type="submit" value="点击查询">
-		</form>
-		<a href="/updataIllnessInfo/">所有疾病</a>
-    </center>
+	<form action = "/updataIllnessByName/" method = "post">
+		疾病名称<input type="text" name = "IllnessName"><input type="submit" value="点击查询">
+	</form>
+		{% if errors1 %}
+			{%for error in errors1%}
+				<li>{{error}}</li>
+			{%endfor%}
+		{%endif%}
+	<form action = "/updataIllnessByDivision/" method = "post">
+		所属科室：<select class = "txt-s" size = "1" name = "divisionType">
+						<option value = "00000">--无--</option>
+						{% if allDivisionList %}
+							{%for division in allDivisionList%}
+			                    <option value = {{division.divisionID}}>{{division.name}}</option>
+			                {%endfor%}
+		                {%endif%}
+	              </select>
+	              <input type="submit" value="点击查询">
+	</form>
 
+	<a href="/updataIllnessInfo/">所有疾病</a>
+	</center>
 	{%if deleteSuccess%}
 		<p>删除成功</p>
 	{%endif%}
@@ -204,6 +204,7 @@
 		</div>
 	{%endif%}
 
+	
 	<footer>
 		<p>
 			Self-illness-registration------自助预约挂号系统

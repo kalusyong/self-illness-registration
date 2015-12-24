@@ -7,6 +7,11 @@
 <title>SIR-医生列表</title>
 </head>
 <body>
+
+<table> <tr><td> <a href="/patientHome/">{{loginPatient}}</a></td>
+	<td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
+	<td><a href="/exit/">退出</a></td>
+</tr></table>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
@@ -23,17 +28,13 @@
 				</div>
 			</div>
 
-			<table> <tr><td> <a href="/mainInterface/">{{logins}}</a></td>
-    			<td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
-    			<td><a href="/signOut/">退出</a></td>
-    		</tr></table>
 
 			<ul class="nav nav-pills">
 				<li>
-					<a href="mainInterface">返回首页</a>
+					<a href="/mainInterface/">返回首页</a>
 				</li>
 				<li class="active">
-					<a href="#">挂号服务</a>
+					<a href="/RegisterService/">挂号服务</a>
 				</li>
 				<li>
 					<a href="/appointManage/">预约管理</a>
@@ -42,20 +43,11 @@
 					<a href="#">最新资讯</a>
 				</li>
 				<li>
-					<a href="#">关于</a>
+					<a href="/about/">关于</a>
 				</li>
 			</ul>
 		</div>
 	</div>
-
-
-
-
-	{% if errors %}
-		{% for error in errors %}
-			<tr><td><p><b><Font size = "6" color = "red">{{error}}</Font></p></tr></td>
-		{% endfor %}
-	{% endif %}
 	    
 
 	{% if doctorInformation %}
@@ -74,42 +66,43 @@
 	            <tr align="center"><td>预约成功</td></tr>
 	            <tr align="center"><td><a href="/appointManage/">点击查看预约</a></td></tr>
 	        {% elif orderFail %}
-				<tr  align="center"><td><div style="color:red">该医生您已预约</td></tr>
+				<tr  align="center"><td><div style="color:red">{{remind}}</td></tr>
 	        {% else %}
-			    <tr align="center"><ul><td><a href="/order/{{ doctorInformation.userName}}/">预约</a></td></ul></tr>
+			    <form name="input" action="/order/{{doctorInformation.userName}}/" method="post">
+				请选择日期: 
+					<select class = "txt-s" size = "1" name = "divisionType">
+                        <option value = "00000">---无---</option>
+                        {%for date in datelist%}
+                       		<option value = {{date.dates}}>{{date.week}}</option>
+                        {%endfor%}
+                    </select>
+				<input type="submit" value="点击预约">
+			    </form>
 	        {% endif %}
 		</table>
 	{% endif %}
 
-	{% if doctorList1 %}
-		<div style="text-align:center;"><h1><b>你搜索的科室是: <strong>{{divisionName}}</strong></h1>
-
-		<table align="center">
-			<tr align="center"><td>
-			    	<p>共找到 {{ doctorList1 | length}} 位医生</p>
-			    </td>
-			</tr>
-			<tr  align="center"><td><div style="color:red">点击医生姓名可查看详情</td></tr>
-			    <ul>
-				{% for doctor in doctorList1 %}
-			        <tr>
-			        	<td><a href="/detailInformation/{{ doctor.userName}}/">{{ doctor.name }}</a></td>
-			        </tr>
-				{% endfor %}
-			    </ul>
-			</tr></td>
-		</table>
-	{% endif %}
+	
+	
+	<div style="text-align:center;">
+	{% if errors %}
+		<p><div style = "color : red">你搜索的医生不存在</div></p>	
+	{%endif%}
 
 	{% if doctorList%}
+		{% if divisionName %}
+			<h3><b>你搜索的科室是: <strong>{{divisionName}}</strong></h3>
+		{% elif doctorName %}
+			<h3><b>你搜索的医生是: <strong>{{doctorName}}</strong></h3>
+		{% elif illnessName %}
+			<h3><b>你搜索的疾病是: <strong>{{illnessName}}</strong></h3>
+		{%endif%}
+		<p>共找到 {{ doctorList | length}} 位医生</p>
 	<div class="row-fluid">
 		<div class="span2">
 		</div>
 		<div class="span8">
 			<table class="table table-hover table-bordered">
-				<div style="text-align:center;"><h3><b>你搜索的医生是: <strong>{{doctorName}}</strong></h3>
-				<tr align="center"><td><p>共找到 {{ doctorList | length}} 位医生</p></td>
-
 				<thead>
 					<tr>
 						<th>

@@ -24,49 +24,48 @@
 			</div>
 		</div>
 	</div>
-	<div style="BORDER-RIGHT: #a8e61d 1px dashed; BORDER-TOP: #a8e61d 1px dashed; BORDER-LEFT: #a8e61d 1px dashed; BORDER-BOTTOM: #a8e61d 1px dashed;width:675px;font-size:13px;margin:0px auto;text-align:center;color:#009900">
-		<p>添加疾病</p>
-		{%if addSuccess%}
-			<p><div style = "color:red">新增疾病成功</div><p>
+	<p>添加疾病</p>
+	{%if addSuccess%}
+		<p><div style = "color:red">新增疾病成功</div><p>
+	{%endif%}
+
+	{%if flag %}
+		<p>为疾病“{{illnessName}}”添加医生</p>
+		<p>所属科室：{{divisionName}}</p>
+
+		<form  name="input" action="/addIllnessSuccess/" method="post">
+			<input type="hidden" name = "illnessName" value = {{illnessName}}>
+			<input type="hidden" name = "divisionType" value = {{divisionName}}>
+	        待选择的医生：<br>
+	        {%for doctor in doctorList%}
+	        	<input type="checkbox" name="doctorName"  value = {{doctor.userName}} />{{doctor.name}}<br>
+
+	        {%endfor%}
+			<input type="submit" value="保存" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+		</form>
+	{%else%}
+		{% if errors %}
+			{%for error in errors%}
+				<li>{{error}}</li>
+			{%endfor%}
 		{%endif%}
-
-		{%if flag %}
-			<p>为疾病“{{illnessName}}”添加医生</p>
-			<p>所属科室：{{divisionName}}</p>
-
-			<form  name="input" action="/addIllnessSuccess/" method="post">
-				<input type="hidden" name = "illnessName" value = {{illnessName}}>
-				<input type="hidden" name = "divisionType" value = {{divisionName}}>
-		        待选择的医生：<br>
-		        {%for doctor in doctorList%}
-		        	<input type="checkbox" name="doctorName"  value = {{doctor.userName}} />{{doctor.name}}<br>
-
-		        {%endfor%}
-				<input type="submit" value="保存" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
-			</form>
-		{%else%}
-			{% if errors %}
-				{%for error in errors%}
-					<li>{{error}}</li>
-				{%endfor%}
-			{%endif%}
-			<BR>
-			<form  action="illnessAddDoctor/" method="post">
-				疾病名称：<input type="text" name = "illnessName"><BR>
-				所属科室：<select class = "txt-s" size = "1" name = "divisionType">
-							<option value = "00000">--无--</option>
-							{% if divisionList %}
-								{%for division in divisionList%}
-				                    <option value = {{division.divisionID}}>{{division.name}}</option>
-				                {%endfor%}
-			                {%endif%}
-		                </select><BR>
-		        疾病描述：<input type="text" name = "illnessDescription" style= "height:200px;width:500px;"><BR>
-		        所属医生：
-		        <input type="submit" value="添加医生" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
-			</form>
-		{%endif%}
-	</div>
+		<BR>
+		<form  action="illnessAddDoctor/" method="post">
+			疾病名称：<input type="text" name = "illnessName"><BR>
+			所属科室：<select class = "txt-s" size = "1" name = "divisionType">
+						<option value = "00000">--无--</option>
+						{% if divisionList %}
+							{%for division in divisionList%}
+			                    <option value = {{division.divisionID}}>{{division.name}}</option>
+			                {%endfor%}
+		                {%endif%}
+	                </select><BR>
+			疾病描述：<textarea class = "vLargeTextField"  name = "illnessDescription" clos = "200" rows = "10"></textarea><BR>
+	        所属医生：
+	        <input type="submit" value="添加医生" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+		</form>
+	{%endif%}
+	
 	<div class="row-fluid">
 		<div class="span12">
 			<h2 align="center">

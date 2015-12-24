@@ -8,163 +8,173 @@
 <title>SIR-自助挂号系统</title>
 </head>
 <body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
-	
-	<table> 
-		<tr><td> <a href="/mainInterface/">{{logins}}</a></td>
-	    <td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
-	    <td><a href="/signOut/">退出</a></td></tr>
-	</table>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="row-fluid">
-					<div class="col-xs-6 span9">
-						<h3>
-							SIR------自助挂号系统
-						</h3>
-					</div>
-					<div class="col-xs-6 span3">
-						<h5 class="text-right text-info">
-							投诉电话：010-86347890
-						</h5>
-					</div>
+<table> 
+	<tr><td> <a href="/mainInterface/">{{login}}</a></td>
+    <td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
+    <td><a href="/exit/">退出</a></td></tr>
+</table>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						SIR------自助挂号系统
+					</h3>
 				</div>
-				<ul class="nav nav-pills">
-					<li class="active"></li>
-					<li class="active">
-					  <a href="#">返回首页</a>
-				    </li>
-					<li>
-						<a href="#">挂号服务</a>				</li>
-					<li>
-						<a href="#">预约管理</a>				</li>
-					<li>
-						<a href="#">最新资讯</a>				</li>
-					<li>
-						<a href="#">关于</a>				</li>
-				</ul>
-				<div class="row-fluid">
-					<div class="span7">
-						<ul class="nav nav-list well">
-							<li class="nav-header">
-								最新资讯
-							</li>
-							<li>
-								<a href="#">糖尿病如何治疗？</a>
-							</li>
-							<li>
-								<a href="#">张秀珍医生抢先预约</a>
-							</li>
-							<li>
-								<a href="#">未来两年医疗行业就业行情</a>
-							</li>
-						</ul>
-					</div>
-					
-					<div class="span5">
-						<form class="form-horizontal" action = "/register/" method = "post">
-							{%if string%}
-	    						<p><li>{{string}}<li></p>
-							{%endif%}
-
-							{% if errors %}
-	    						{% for error in errors %}
-	        					<li>{{error}}</li>
-	    						{% endfor %}
-							{% endif %}
-
-
-							<div class="control-group">
-								 <label class="control-label" for="inputEmail">账户</label>
-								<div class="controls">
-									<input id="inputEmail" name = "userName" value = {{user.userName}}>
-								</div>
-							</div>
-							<div class="control-group">
-								 <label class="control-label" for="inputPassword">密码</label>
-								<div class="controls">
-									<input id="inputPassword" type="password" name = "Password" value = {{user.Password}}>
-								</div>
-							</div>
-							<div class="control-group">
-								 <label class="control-label">用户类型</label>
-								<div class="controls">
-									<select class = "txt-s" size = "1" name = "serviceType">
-	                    				<option value = "2">普通用户</option>
-	                    				<option value = "1">医生</option>
-	                    				<option value = "0">管理员</option>
-	                				</select>
-								</div>
-							</div>
-							<div class="control-group">
-								<div class="controls">
-									 <button type="submit" class="btn">登录</button> <a href="#">忘记密码？</a>
-								</div>
-							</div>
-							<div class="control-group">
-								<div class="controls">
-									 <a href="/login/">立即注册</a>
-								</div>
-							</div>
-						</form>
-					</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
 				</div>
 			</div>
-		</div>
-		<hr/>
-		<div class="row-fluid">
-			<div class="span7">
-				<form name="input" action="/demandDoctor/" method="post">
-					按医生查询: <input type="text" name="doctorName">
-					<input type="submit" value="点击查询">
-					<a href="#">>>所有医生</a>
-					{%if errors1 %}
-	                	<tr><td>请输入医生姓名</td></tr>
-	            	{% endif %}
-	            <tr>
-				</form>
-				<form name="input" action="/demandDivision/" method="post">
-					按科室查询: 
-						<select class = "txt-s" size = "1" name = "divisionType">
-	                        <option value = "3">外科</option>
-	                        <option value = "2">儿科</option>
-	                        <option value = "1">耳科</option>
-	                        <option value = "4">眼科</option>
-	                    </select>
-					<input type="submit" value="点击查询">
-					<a href="#">>>所有科室</a>
-				</form>
-				<form name="input" action="/demandIllness/" method="post">
-					按疾病查询: <input type="text" name="illnessName">
-					<input type="submit" value="点击搜索">
-					<a href="#">>>所有疾病</a>
-				</form>
-			</div>
-			<div class="span5">
-				<ul class="nav nav-list well">
-					<li class="nav-header">
-						常见问题
-					</li>
-					<li>
-						<a href="#">如何进行预约？</a>
-					</li>
-					<li>
-						<a href="#">预约成功了，下一步该怎么做？</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<hr/>
-		<div class="row-fluid" >
-			<div class="span12">
-				<p style="text-align:center">
-					Self-illness-registration------自助预约挂号系统
-				</p>
-				<p style="text-align:center">
-					地址：哈尔滨市南岗区西大直街92号
-				</p>
+			<ul class="nav nav-pills">
+				<li class="active"></li>
+				<li class="active">
+				  <a href="/mainInterface/">返回首页</a>
+			    </li>
+
+				<li>
+					<a href="/RegisterService/">挂号服务</a>				
+				</li>
+
+				<li>
+					<a href="/appointManage/">预约管理</a>				
+				</li>
+
+				<li>
+					<a href="#">最新资讯</a>				
+				</li>
+
+				<li>
+					<a href="/about/">关于</a>				
+				</li>
+
+			</ul>
+			<div class="row-fluid">
+				<div class="span7">
+					<ul class="nav nav-list well">
+						<li class="nav-header">
+							最新资讯
+						</li>
+						<li>
+							<a href="#">糖尿病如何治疗？</a>
+						</li>
+						<li>
+							<a href="#">张秀珍医生抢先预约</a>
+						</li>
+						<li>
+							<a href="#">未来两年医疗行业就业行情</a>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="span5">
+					<form class="form-horizontal" action = "/register/" method = "post">
+						{%if string%}
+    						<p><li>{{string}}<li></p>
+						{%endif%}
+
+						{% if errors %}
+    						{% for error in errors %}
+        					<li>{{error}}</li>
+    						{% endfor %}
+						{% endif %}
+
+						<div class="control-group">
+							 <label class="control-label" for="inputEmail">账户</label>
+							<div class="controls">
+								<input id="inputEmail" name = "userName" value = {{user.userName}}>
+							</div>
+						</div>
+						<div class="control-group">
+							 <label class="control-label" for="inputPassword">密码</label>
+							<div class="controls">
+								<input id="inputPassword" type="password" name = "Password" value = {{user.Password}}>
+							</div>
+						</div>
+						<div class="control-group">
+							 <label class="control-label">用户类型</label>
+							<div class="controls">
+								<select class = "txt-s" size = "1" name = "serviceType">
+                    				<option value = "2">普通用户</option>
+                    				<option value = "1">医生</option>
+                    				<option value = "0">管理员</option>
+                				</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls">
+								 <button type="submit" class="btn">登录</button> <a href="#">忘记密码？</a>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls">
+								 <a href="/login/">立即注册</a>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+	<hr/>
+	<div class="row-fluid">
+		<div class="span7">
+			{%if errors1 %}
+                <li>请输入医生姓名</li>
+            {% endif %}
+			<form name="input" action="/demandByDoctor/" method="post">
+				按医生查询: <input type="text" name="doctorName">
+				<input type="submit" value="点击查询">
+				<a href="/demandAllDoctor/">所有医生</a>
+			</form>
+
+			{%if errors2 %}
+                <li>请选择科室</li>
+            {% endif %}
+			<form name="input" action="/demandByDivision/" method="post">
+				按科室查询: 
+					<select class = "txt-s" size = "1" name = "divisionType">
+                        <option value = "00000">---无---</option>
+                        {%for division in divisionList%}
+                        	<option value = {{division.divisionID}}>{{division.name}}</option>
+                        {%endfor%}
+                    </select>
+				<input type="submit" value="点击查询">
+			</form>
+
+			<form name="input" action="/demandByIllness/" method="post">
+				按疾病查询: <input type="text" name="illnessName">
+				<input type="submit" value="点击搜索">
+				<a href="#">所有疾病</a>
+			</form>
+		</div>
+		<div class="span5">
+			<ul class="nav nav-list well">
+				<li class="nav-header">
+					常见问题
+				</li>
+				<li>
+					<a href="#">如何进行预约？</a>
+				</li>
+				<li>
+					<a href="#">预约成功了，下一步该怎么做？</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<hr/>
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
 </body>
 </html>

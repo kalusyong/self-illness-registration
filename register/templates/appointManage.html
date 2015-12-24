@@ -7,6 +7,12 @@
 <title>SIR-预约管理</title>
 </head>
 <body>
+<table> 
+	<tr><td> <a href="/patientHome/">{{login}}</a></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+	<td><a href="/exit/">退出</a></td>
+	</tr>
+</table>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
@@ -23,28 +29,21 @@
 				</div>
 			</div>
 
-			<table> 
-				<tr><td> <a href="/mainInterface/">{{logins}}</a></td>
-    				<td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
-    				<td><a href="/signOut/">退出</a></td>
-   				</tr>
-   			</table>
-
 			<ul class="nav nav-pills">
 				<li>
 					<a href="/mainInterface/">返回首页</a>
 				</li>
 				<li>
-					<a href="#">挂号服务</a>
+					<a href="/RegisterService/">挂号服务</a>
 				</li>
 				<li class="active">
-					<a href="#">预约管理</a>
+					<a href="/appointManage/">预约管理</a>
 				</li>
 				<li>
 					<a href="#">最新资讯</a>
 				</li>
 				<li>
-					<a href="#">关于</a>
+					<a href="/about/">关于</a>
 				</li>
 			</ul>
 		</div>

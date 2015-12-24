@@ -7,6 +7,12 @@
 <title>SIR-医生列表</title>
 </head>
 <body>
+
+<table> <tr><td>欢迎您：<a href="/patientHome/{{login.userName}}/">{{login.userName}}</a></td>
+	<td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
+	<td><a href="/exit/">退出</a></td>
+</tr></table>
+
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
@@ -23,17 +29,13 @@
 				</div>
 			</div>
 
-			<table> <tr><td> <a href="/mainInterface/">{{logins}}</a></td>
-    			<td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
-    			<td><a href="/signOut/">退出</a></td>
-    		</tr></table>
 
 			<ul class="nav nav-pills">
 				<li>
-					<a href="mainInterface">返回首页</a>
+					<a href="/mainInterface/">返回首页</a>
 				</li>
 				<li class="active">
-					<a href="#">挂号服务</a>
+					<a href="/RegisterService/">挂号服务</a>
 				</li>
 				<li>
 					<a href="/appointManage/">预约管理</a>
@@ -42,7 +44,7 @@
 					<a href="#">最新资讯</a>
 				</li>
 				<li>
-					<a href="#">关于</a>
+					<a href="/about/">关于</a>
 				</li>
 			</ul>
 		</div>
@@ -59,31 +61,42 @@
     {% endif %}
 	<div class="row-fluid">
 		<div class="span7">
-			<form name="input" action="/demandDoctor/" method="post">
+
+			{%if errors1 %}
+            	<li>请输入医生姓名</li>
+        	{% endif %}
+			<form name="input" action="/demandByDoctor/" method="post">
 				按医生查询: <input type="text" name="doctorName">
 				<input type="submit" value="点击查询">
-				<a href="#">所有医生</a>
-				{%if errors1 %}
-                	<tr><td>请输入医生姓名</td></tr>
-            	{% endif %}
-            <tr>
+				<a href="/demandAllDoctor/">所有医生</a>
+			<tr>
 			</form>
-			<form name="input" action="/demandDivision/" method="post">
+
+			<form name="input" action="/demandByDivision/" method="post">
 				按科室查询: 
 					<select class = "txt-s" size = "1" name = "divisionType">
-                        <option value = "3">外科</option>
-                        <option value = "2">儿科</option>
-                        <option value = "1">耳科</option>
-                        <option value = "4">眼科</option>
+                        <option value = "00000" selected = "selected">---无---</option>
+                        	{%for division in allDivisionList%}
+                        		<option value = {{division.divisionID}}>{{division.name}}</option>
+                        	{%endfor%}   
                     </select>
 				<input type="submit" value="点击查询">
-				<a href="#">所有科室</a>
 			</form>
-			<form name="input" action="/demandIllness/" method="post">
+
+			{%if noEnter %}
+                	<li>请输入疾病姓名</li>
+            {%elif noIllness%}
+            		<li>你搜索的疾病不存在<li>
+            {% endif %}
+			<form name="input" action="/demandByIllness/" method="post">
 				按疾病查询: <input type="text" name="illnessName">
 				<input type="submit" value="点击搜索">
-				<a href="#">所有疾病</a>
+				<a href="/#/">所有疾病</a>
 			</form>
+
+			<a href="{{URL}}">返回操作界面</a>
+			<!-- <input type="button" value="返回操作界面" class="btn" onclick="window.open('/{{URL}}/')" 
+				style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/> -->
 		</div>
 	</div>
 	

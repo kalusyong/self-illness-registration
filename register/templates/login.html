@@ -24,7 +24,7 @@
 			<div class="row-fluid">
 				<div class="col-xs-6 span9">
 					<h3>
-						Self-illness-registration------自助挂号系统
+						SIR------自助挂号系统
 					</h3>
 				</div>
 				<div class="col-xs-6 span3">
@@ -60,8 +60,8 @@
 	<div class="row-fluid">
 		<div class="span2">
 		</div>
-		<center>
 		<div class="span8">
+
 			<form name="input" action="/loginVerify/" method="post">
 				账　　号: <input type="text" name="userName">
 				<br>
@@ -71,25 +71,36 @@
 				<br>
 				用户类别:
 				<select size = "1" name = "serviceType">
+					<option value = "3" selected="selected">---无---</option>
                     <option value = "2">普通用户</option>
                     <option value = "1">医生</option>
-                </select>
-                <br>
-				<input type="submit" value="点击注册">
+                </select><br>
+                医生科室:
+				<select size = "1" name = "divisionType">
+					<option value = "00000">---无---</option>
+					{%for division in allDivisionList%}
+                    	<option value = {{division.divisionID}}>{{division.name}}</option>
+                    {%endfor%}
+                </select><br>
+                
+                <input type="submit" value="点击注册">
 				<a href="/mainInterface/">返回登录</a>
 			</form>
-		</div></center>
+		</div>
 		<div class="span2">
 		</div>
 	</div>
-	<footer>
-		<p>
-			Self-illness-registration------自助预约挂号系统
-		</p>
-		<p >
-			地址：哈尔滨市南岗区西大直街92号
-		</p>
-	</footer>
+	<hr/>
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
 </div>
 </body>
 </html>

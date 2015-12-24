@@ -24,13 +24,16 @@
 			</div>
 		</div>
 	</div>
+	
 	<h2>{{news.Title}}</h2>
 	<p>作者：{{news.author}}</p>
 	<p>日期：{{news.Data}}</p><br>
-	{% if news.Image %}
-		<img src= "{{ news.Image.url }}" />
-	{% endif %}<br>
-	<p>正文：{{news.Text}}</p>
+	<p>图片：</p>
+	<img src = "..media/{{news.Image.url }}" width = "175px" 	height = "175px"/>
+	<!-- {% if news.Image %}
+		<p>图片：<img src = '{{news.Image.url}}' ></img></p>
+	{% endif %}<br> -->
+	<p>正文：</p><textarea rows = "10" clos = "20">{{news.Text}}</textarea>
 
 	
 	<div class="row-fluid">

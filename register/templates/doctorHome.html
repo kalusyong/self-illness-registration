@@ -1,0 +1,93 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-医生列表</title>
+</head>
+<body>
+
+{%if loginDoctor%}
+	<p>欢迎您：{{doctor.userName}}</a></p>
+	<p><a href="#">退出</a></p>
+{%endif%}
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					
+
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+			<ul class="nav nav-pills">
+				<li>
+					<a href="#">返回首页</a>
+				</li>
+				<li>
+					<a href="#">挂号服务</a>
+				</li>
+				<li>
+					<a href="#">预约管理</a>
+				</li>
+				<li>
+					<a href="#">最新资讯</a>
+				</li>
+				<li>
+					<a href="#">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{%if changeSuccess%}
+		<p>更新成功</p>
+	{%endif%}
+	<h2>个人信息</h2>
+	<p>用户名:{{doctor.userName}}</p>
+	<p>姓名:{{doctor.name}}</p>
+	<p>性别:{{doctor.sex}}</p>
+	<p>年龄:{{doctor.age}}
+	<p>电话:{{doctor.phoneNumber}}</p>
+	<p>简介:{{doctor.intro}}</p>
+	<p>所属科室:{{division.name}}</p>
+	<p>上班时间:
+		{%for day in workday%}
+			<ul><li>{{day}}</li></ul>
+		{%endfor%}
+	</p>
+	<p>非上班时间:
+		{%for day in noWorkday%}
+			<ul><li>{{day}}</li></ul>
+		{%endfor%}
+	</p>
+	<p>每天可预约人数:{{doctor.appointNum}}</p>
+
+	<input type="button" value="修改个人信息" class="btn" onclick="window.open('/changeSelfInfo/')" 
+		style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+
+	<input type="button" value="修改密码" class="btn" onclick="window.open('/DchangePassword/')" 
+		style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

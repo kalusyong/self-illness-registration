@@ -33,7 +33,8 @@
 			所属科室：{{division}}<BR>
 			          <input type = "hidden"  name = "illnessdDivision" value = {{illness.division}}>
 
-	        疾病描述：<input type = "text"  name = "illnessdDescription" value = {{illness.description}}><BR>
+			疾病描述：<textarea class = "vLargeTextField"  name = "illnessDescription" clos = "200" rows = "10">{{illness.description}}</textarea><BR>
+
 	        所属医生：{{alreadyLen}}位<BR>
 	        	{%for doctor in alreadyAddedDoctor%}
 	        		<p>{{doctor.name}}</p>
