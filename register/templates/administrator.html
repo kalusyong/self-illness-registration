@@ -7,14 +7,11 @@
 <title>SIR-管理员界面</title>
 </head>
 <style type="text/css">
-	#left{background: #A6ffff; width:400px;height:300px;float:left;}
-	#center{background: #BBFFFF; width:400px;height:300px;float:left;}
+	#left{background: #F5FFFA; width:400px;height:300px;float:left;}
+	#center{background: #FDF5E6; width:400px;height:300px;float:left;}
 	#right{background:#80FFFF; width:400px;height:300px;float:left;}
 </style>
-<body>
-<div style="position:absolute;z-index:-1;width:100%;height:100%;">
-		<img src="../image/background.jpg" width="100%" height="100%">
-</div>
+<body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
@@ -32,7 +29,8 @@
 			</div>
 		</div>
 	</div>
-	<div id="left"  style="margin:0 auto;">
+
+	<div id="left">
 		<input type="button" value="进入疾病库" class="btn" onclick="window.open('illnessLibrary/')" 
 			style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
 	</div>

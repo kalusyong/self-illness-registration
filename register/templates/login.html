@@ -6,7 +6,18 @@
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
 <title>SIR-用户注册</title>
 </head>
-<body>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
@@ -49,6 +60,7 @@
 	<div class="row-fluid">
 		<div class="span2">
 		</div>
+		<center>
 		<div class="span8">
 			<form name="input" action="/loginVerify/" method="post">
 				账　　号: <input type="text" name="userName">
@@ -66,21 +78,18 @@
 				<input type="submit" value="点击注册">
 				<a href="/mainInterface/">返回登录</a>
 			</form>
-		</div>
+		</div></center>
 		<div class="span2">
 		</div>
 	</div>
-	<hr/>
-	<div class="row-fluid">
-		<div class="span12">
-			<h2 align="center">
-				Self-illness-registration------自助预约挂号系统
-			</h2>
-			<p style="text-align:center">
-				地址：哈尔滨市南岗区西大直街92号
-			</p>
-		</div>
-	</div>
+	<footer>
+		<p>
+			Self-illness-registration------自助预约挂号系统
+		</p>
+		<p >
+			地址：哈尔滨市南岗区西大直街92号
+		</p>
+	</footer>
 </div>
 </body>
 </html>

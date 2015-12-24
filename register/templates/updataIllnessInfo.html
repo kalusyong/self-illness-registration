@@ -5,16 +5,27 @@
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
 <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
-<title>更新疾病信息</title>
+<title>SIR-更新疾病信息</title>
 </head>
-<body>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="row-fluid">
 				<div class="col-xs-6 span9">
 					<h3>
-						Self-illness-registration------自助挂号系统
+						SIR------自助挂号系统
 					</h3>
 				</div>
 				<div class="col-xs-6 span3">
@@ -25,36 +36,37 @@
 			</div>
 		</div>
 	</div>
-	<p>更新疾病信息</p>
-	{%if updataSuccess%}
-		<p><div style = "color:red">更新{{illnessName}}成功</div></p>
-	{%endif%}
-		{% if errors0 %}
-			{%for error in errors0%}
-				<li>{{error}}</li>
-			{%endfor%}
+	<center>
+		<h3>更新疾病信息</h3>
+				{%if updataSuccess%}
+			<p><div style = "color:red">更新{{illnessName}}成功</div></p>
 		{%endif%}
-	<form action = "/updataIllnessByName/" method = "post">
-		疾病名称<input type="text" name = "IllnessName"><input type="submit" value="点击查询">
-	</form>
-		{% if errors1 %}
-			{%for error in errors1%}
-				<li>{{error}}</li>
-			{%endfor%}
-		{%endif%}
-	<form action = "/updataIllnessByDivision/" method = "post">
-		所属科室：<select class = "txt-s" size = "1" name = "divisionType">
-						<option value = "00000">--无--</option>
-						{% if allDivisionList %}
-							{%for division in allDivisionList%}
-			                    <option value = {{division.divisionID}}>{{division.name}}</option>
-			                {%endfor%}
-		                {%endif%}
-	              </select>
-	              <input type="submit" value="点击查询">
-	</form>
-
-	<a href="/updataIllnessInfo/">所有疾病</a>
+			{% if errors0 %}
+				{%for error in errors0%}
+					<li>{{error}}</li>
+				{%endfor%}
+			{%endif%}
+		<form action = "/updataIllnessByName/" method = "post">
+			疾病名称<input type="text" name = "IllnessName"><input type="submit" value="点击查询">
+		</form>
+			{% if errors1 %}
+				{%for error in errors1%}
+					<li>{{error}}</li>
+				{%endfor%}
+			{%endif%}
+		<form action = "/updataIllnessByDivision/" method = "post">
+			所属科室：<select class = "txt-s" size = "1" name = "divisionType">
+							<option value = "00000">--无--</option>
+							{% if allDivisionList %}
+								{%for division in allDivisionList%}
+				                    <option value = {{division.divisionID}}>{{division.name}}</option>
+				                {%endfor%}
+			                {%endif%}
+		              </select>
+		              <input type="submit" value="点击查询">
+		</form>
+		<a href="/updataIllnessInfo/">所有疾病</a>
+    </center>
 
 	{%if deleteSuccess%}
 		<p>删除成功</p>
@@ -192,17 +204,14 @@
 		</div>
 	{%endif%}
 
-	
-	<div class="row-fluid">
-		<div class="span12">
-			<h2 align="center">
-				Self-illness-registration------自助预约挂号系统
-			</h2>
-			<p style="text-align:center">
-				地址：哈尔滨市南岗区西大直街92号
-			</p>
-		</div>
-	</div>
+	<footer>
+		<p>
+			Self-illness-registration------自助预约挂号系统
+		</p>
+		<p >
+			地址：哈尔滨市南岗区西大直街92号
+		</p>
+	</footer>
 </div>
 </body>
 </html>

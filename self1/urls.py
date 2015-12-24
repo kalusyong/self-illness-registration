@@ -2,6 +2,7 @@
 from django.conf.urls import*
 from django.contrib import admin
 from register import views
+from self1 import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -53,5 +54,6 @@ urlpatterns = patterns('',
     url(r'^registraService/$',views.registraServiceInterface),
     
     url(r'^newMassage/$',views.newMassageInterface),
+    url(r'^image/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATICFILES_DIRS,'show_indexes': True}),
     
 )
