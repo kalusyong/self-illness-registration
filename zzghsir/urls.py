@@ -37,12 +37,13 @@ urlpatterns = patterns('',
     url(r'^patientHome/$',views.patientHome),
     
     url(r'^doctorHome/(.+)/$',views.doctorHome),
-    url(r'^changeSelfInfo/$',views.changeSelfInfo),
+    url(r'^changeSelfInfo/(.+)/$',views.changeSelfInfo),
     url(r'^updataDoctorInfoSuccess/$',views.updataDoctorInfoSuccess),
-    url(r'^DchangePassword/$',views.DoctorchangePassword),
+    url(r'^DchangePassword/(.+)/$',views.DoctorchangePassword),
     url(r'^DchangePasswordSuccess/$',views.DchangePasswordSuccess),
     url(r'^returnAppointList/(.+)/$',views.returnAppointList),
-    
+    url(r'^doctorExit/$',views.doctorExitApp),
+
     #按条件查询
     url(r'^demandByDoctor/$',views.demandByDoctor),
     url(r'^demandAllDoctor/$',views.demandAllDoctor),    

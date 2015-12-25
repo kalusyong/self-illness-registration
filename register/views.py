@@ -434,7 +434,7 @@ def order(request,doctoruserName):
             return render_to_response('serviceAppoint.html',
                                       {'doctorInformation':doctor,'orderFail':1,
                                        'login':loginPatient,'remind':"该医生已被预约满"})
-        
+                                              
         tables1 = patient.patient_set.all()
         tables2 = models.appointTable.objects.filter(weekNumber = date)
         tables = list(set(tables1) & set(tables2))
@@ -667,9 +667,10 @@ def doctorHome(request,doctorUsername):
                               "loginDoctor":loginDoctor,"doctor":doctor,
                               "division":division})
 
-def changeSelfInfo(reqeust):
+def changeSelfInfo(reqeust,doctorUsername):
     flag = 0
     global loginDoctor
+    loginDoctor.userName = doctorUsername
     doctor = models.Doctor.objects.get(userName = loginDoctor.userName)
     division = doctor.division
     allDivisionList = models.Division.objects.all()
@@ -692,6 +693,7 @@ def updataDoctorInfoSuccess(request):
     global loginDoctor
     global weekdayRever
     global weekday
+    loginDoctor.userName = request.POST["doctorUserName"]
     if request.POST:
         doctor = models.Doctor.objects.get(userName = request.POST["doctorUserName"])
         nameTemp = request.POST["doctorName"]
@@ -768,14 +770,17 @@ def updataDoctorInfoSuccess(request):
                               "loginDoctor":loginDoctor,"doctor":doctor,
                               "division":division,"changeSuccess":1})
 
-def DoctorchangePassword(request):
+def DoctorchangePassword(request,doctorUsername):
     global loginDoctor
+    loginDoctor.userName = doctorUsername
     doctor = models.Doctor.objects.get(userName = loginDoctor.userName)
     return render_to_response("DchangePassword.html",
-                              {"loginDoctor":loginDoctor,"doctor":doctor})      
+                              {"loginDoctor":loginDoctor,"doctor":doctor})
+
 def DchangePasswordSuccess(request):
     global loginDoctor      
     errors = []
+    loginDoctor.userName = request.POST['doctorUserName']
     if request.POST:
         password = request.POST['newPassword']
         confirmPassword = request.POST['confirmPassword']
@@ -815,7 +820,12 @@ def returnAppointList(request,doctorUserName):
                               "fillInfo":fillInfo,"noAppointed":noAppointed,
                               "appointedList":appointedList})
 
-
+def doctorExitApp(request):
+    global loginDoctor
+    loginDoctor.userName = "login"
+    divisionList = models.Division.objects.all()
+    return render_to_response('mainInterface.html',{'login': loginDoctor,
+                                                    "divisionList":divisionList})
 
 def loginVerify(request):
     errors = []

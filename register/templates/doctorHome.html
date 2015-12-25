@@ -12,7 +12,7 @@
 
 {%if loginDoctor%}
 	<p class="text-right text-info">欢迎您：{{doctor.userName}}</a>
-	<a href="#">退出</a></p>
+	<a href="/doctorExit/">退出</a></p>
 {%endif%}
 
 <div class="container-fluid">
@@ -61,10 +61,12 @@
 		</p>
 		<p>每天可预约人数:{{doctor.appointNum}}</p>
 
-		<input type="button" value="修改个人信息" class="btn" onclick="window.open('/changeSelfInfo/')" 
+		<input type="button" value="修改个人信息" class="btn" 
+			onclick="window.open('/changeSelfInfo/{{doctor.userName}}/')" 
 			style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:skyblue"/>
 
-		<input type="button" value="修改密码" class="btn" onclick="window.open('/DchangePassword/')" 
+		<input type="button" value="修改密码" class="btn" 
+			onclick="window.open('/DchangePassword/{{doctor.userName}}/')" 
 			style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:skyblue"/>
 	</div>
 	<hr/>
