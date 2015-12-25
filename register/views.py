@@ -1,4 +1,4 @@
-# -*- coding: gbk -*-
+# -*- coding: utf-8 -*-
 from django.shortcuts import*
 from register import models
 from django.http import HttpResponse,HttpResponseRedirect
@@ -10,7 +10,7 @@ loginPatient = models.Patient()
 loginPatient.userName = 'login'
 loginDoctor = models.Doctor()
 loginDoctor.userName = 'login'
-URL = "/mainInterface/"
+wangzhi = "/mainInterface/"
 
 weekday = {1:"Monday",2:"Tuesday",3:"Wednesday",4:"Thursday",5:"Friday",6:"Saturday",7:"Sunday"}
 weekdayRever = {"Monday":1,"Tuesday":2,"Wednesday":3,"Thursday":4,"Friday":5,"Saturday":6,"Sunday":7}
@@ -19,8 +19,10 @@ now = datetime.datetime.now()
 now = now.date()
 now = now + datetime.timedelta(hours=24)
 datelist = {now:weekday[now.isoweekday()]}
+datelistRever = {now.isoweekday():now}
 for i in range(1,7):
     now = now + datetime.timedelta(hours=24)
+    datelistRever[now.isoweekday()] = now
     datelist[now] = weekday[now.isoweekday()]
     i = i+1
 datesort = sorted(datelist.iteritems(), key = lambda asd:asd[0], reverse = False)
@@ -28,6 +30,13 @@ datesort = sorted(datelist.iteritems(), key = lambda asd:asd[0], reverse = False
 class date():
     dates = 0
     week = 0
+    flag = 0
+    
+class appointItem():
+    doctor = models.Doctor()
+    patient = models.Patient()
+    weekdayNum = "0"
+    date = 0
     
 datesorts=[]
 for i in range(0,7):
@@ -39,13 +48,34 @@ for i in range(0,7):
     datesorts.append(team)
 
 #login = loginPatient
-#loginPatient = models.Patient.objects.filter(userName = 'µÇÂ¼')
+#loginPatient = models.Patient.objects.filter(userName = 'ç™»å½•')
+def DoctorSearchAppoint(user):
+    global weekday
+    itemList = user.appointtable_set.all()
+    appointList = []
+    if(itemList):
+        longs = len(itemList)
+        for i in range(0,longs):
+            for j in range(0,longs-i-1):
+                if(itemList[j].appintDate >= itemList[j+1].appintDate):
+                    team = itemList[j]
+                    itemList[j] = itemList[j+1]
+                    itemList[j+1] = team
+        for item in itemList :
+            tag = appointItem()
+            tag.doctor = user
+            tag.patient = item.patient
+            tag.date = str(item.appintDate)
+            tag.weekdayNum = weekday[int(item.weekNumber)]
+            appointList.append(tag)
+    return appointList
+ 
 
 def mainInterface(request):
     global loginPatient
     divisionList = models.Division.objects.all()
     return render_to_response('mainInterface.html',
-                              {'login': loginPatient.userName,"divisionList":divisionList})
+                              {'login': loginPatient,"divisionList":divisionList})
 def loginInterface(request):
     allDivisionList = models.Division.objects.all()
     return render_to_response('login.html',
@@ -79,6 +109,27 @@ def deleteNews(request,newsTitle):
         flag = 1
     return render_to_response('updataNews.html',
                               {"listLength":listLength,"newsList":newsList,"flag":flag}) 
+
+def news1(request):
+    global loginPatient
+    return render_to_response("news1.html",{"login":loginPatient})
+
+def news2(request):
+    global loginPatient
+    return render_to_response("news2.html",{"login":loginPatient})
+
+def news3(request):
+    global loginPatient
+    return render_to_response("news3.html",{"login":loginPatient})
+
+def problem1(request):
+    global loginPatient
+    return render_to_response("problem1.html",{"login":loginPatient})
+
+def problem2(request):
+    global loginPatient
+    return render_to_response("problem2.html",{"login":loginPatient})
+
 def saveNews(request):
     errors = []
     if request.POST:
@@ -114,7 +165,7 @@ def saveNews(request):
             #tempNews.Image = 'photos/%s/%s' %(now,request.FILES["newsPicture"])
             #tempNews.save()
             
-            #¹æ¶¨Í¼Æ¬µÄ´óĞ¡ 
+            #è§„å®šå›¾ç‰‡çš„å¤§å° 
             """
             reqfile = request.FILES['newsPicture']
             tempNews.image = Image.open(reqfile)
@@ -122,6 +173,7 @@ def saveNews(request):
             tempNews.image.save("D:/self1/1.jpeg","jpeg")
             #return HttpResponse("success")"""
             return render_to_response("createNews.html",{"createSuccess":1})
+            
 def showNews(request,newsTitle):
     news = models.News.objects.get(Title = newsTitle)
     return render_to_response("showNews.html",{"news":news})
@@ -131,6 +183,7 @@ def updataIllnessInfo(request):
     allDivisionList = models.Division.objects.all()
     return render_to_response("updataIllnessInfo.html",
                              {"allIllnessList":allIllnessList,"allDivisionList":allDivisionList})
+                             
 def illnessDetailInfomation(request,illnessName):
     allowAddDoctor = []
     illness = models.Illness.objects.get(name = illnessName)
@@ -138,10 +191,10 @@ def illnessDetailInfomation(request,illnessName):
     alreadyAddedDoctor = illness.doctor.all()
     allDoctorInDivision = division.doctor_set.all()
     for i in range(0,len(allDoctorInDivision)):
-        if(allDoctorInDivision[i] in alreadyAddedDoctor):   #ÒÑÔÚ¸Ã¼²²¡ÏÂµÄÒ½Éú
+        if(allDoctorInDivision[i] in alreadyAddedDoctor):   #å·²åœ¨è¯¥ç–¾ç—…ä¸‹çš„åŒ»ç”Ÿ
             continue
         else:
-            allowAddDoctor.append(allDoctorInDivision[i])   #»¹¿ÉÒÔÌí¼ÓÔÚ¸Ã¼²²¡ÏÂµÄÒ½Éú
+            allowAddDoctor.append(allDoctorInDivision[i])   #è¿˜å¯ä»¥æ·»åŠ åœ¨è¯¥ç–¾ç—…ä¸‹çš„åŒ»ç”Ÿ
     return render_to_response("updataIllnessContent.html",
                               {"alreadyAddedDoctor":alreadyAddedDoctor,
                                "illness":illness,
@@ -154,8 +207,8 @@ def updataIllnessSuccess(request):
     if request.POST:
         tempDoctorList = request.POST.getlist("doctorName")
         tempIllnessName = request.POST["illnessdName"]
-        illness = models.Illness.objects.get(name =tempIllnessName)#ÕÒµ½¼²²¡
-        allDivisionList = models.Division.objects.all()#ÕÒµ½ËùÓĞ¿ÆÊÒ
+        illness = models.Illness.objects.get(name =tempIllnessName)#æ‰¾åˆ°ç–¾ç—…
+        allDivisionList = models.Division.objects.all()#æ‰¾åˆ°æ‰€æœ‰ç§‘å®¤
         if(len(tempDoctorList) == 0):
             illness.description = request.POST["illnessDescription"]
             illness.save()
@@ -213,8 +266,6 @@ def updataIllnessByName(request):
         else:
             return render_to_response("updataIllnessInfo.html",
                                       {"demandByIllness":1,"Illness":IllnessList[0],"allDivisionList":allDivisionList})
-        
-   
     
 def addIllnessSuccess(request):
     if request.POST:
@@ -243,7 +294,7 @@ def illnessAddDoctor(request):
                                       {"errors":errors,"divisionList":allDivisionList})
         
         tempIllness = models.Illness.objects.filter(name = tempName)
-        if(len(tempIllness) > 0):   #ÅĞ¶Ï¸Ã¼²²¡ÊÇ·ñÒÑÌí¼Ó
+        if(len(tempIllness) > 0):   #åˆ¤æ–­è¯¥ç–¾ç—…æ˜¯å¦å·²æ·»åŠ 
             errors.append("the illness is already exist!")
             return render_to_response("addIllness.html",
                                       {"errors":errors,"divisionList":allDivisionList})
@@ -255,19 +306,17 @@ def illnessAddDoctor(request):
         illness.division = tempDivision
         illness.description = tempDescription
         illness.save()
-        #return HttpResponse(doctorList[1].name)
         return render_to_response("addIllness.html",
                {"flag":1,"illnessName":tempName,"divisionName":tempDivision,"doctorList":doctorList})
                
 def showDivision(request):
     divisionList = models.Division.objects.all()
-    #return HttpResponse(divisionList[1].divisionID)
-    return render_to_response("manageDivision.html",{"divisionList":divisionList})  
+    return render_to_response("manageDivision.html",{"divisionList":divisionList})
+    
 def deleteDivision(request,divisionID_a):
     divisionTemp = models.Division.objects.get(divisionID = divisionID_a)
     divisionTemp.delete()
     divisionList = models.Division.objects.all()
-    #return HttpResponse(divisionList[1].divisionID)
     return render_to_response("manageDivision.html",{"divisionList":divisionList}) 
     
 def addDivision(request):
@@ -289,141 +338,224 @@ def addDivision(request):
             division.divisionID = request.POST["divisionID"]
             division.save()
             return render_to_response("manageDivision.html") 
-            
-    
-    
-def deleteAppointDoctor(request,doctorUserName):
-    deleteFlag = [1]    
-    patient = models.Patient.objects.get(userName = loginPatient.userName)
-    doctor = models.Doctor.objects.get(userName = doctorUserName)
-    patient.doctorsList.remove(doctor)
-    
-    #patient = models.Patient.objects.get(userName = loginPatient.userName)
-    doctorList = patient.doctorsList.all()
-    return render_to_response('appointManage.html',
-                              {'deleteFlag':deleteFlag,'doctorList':doctorList,'logins':loginPatient.userName})
 
-def order(request,doctoruserName):
-    global loginPatient
+def deleteAppointDoctor(request):
+    global loginPatient,weekdayRever,weekday
+    deleteFlag = 1
+    patientUserName = loginPatient.userName
     if request.POST:
-        date = request.POST['divisionType']
-        print 2222
-        print date
+        doctorUserName = request.POST["doctorUserName"] 
+        weekdayEng = request.POST["weekdayNum"]    
+        weekdayNum = weekdayRever[weekdayEng]  #è·å¾—æ˜ŸæœŸå‡ (æ•°å­—å½¢å¼)
+        patient = models.Patient.objects.get(userName = patientUserName)#è·å¾—å½“å‰ç—…äºº
+        tableList1 = patient.patient_set.all()  #å¾—åˆ°å½“å‰ç—…äººçš„æ‰€æœ‰è¡¨
+        tableList2 = models.appointTable.objects.filter(weekNumber = str(weekdayNum))
+        tables = list(set(tableList1) & set(tableList2))    #å–äº¤é›†
+        appointTable = tables[0]        #æ‰¾åˆ°æ»¡è¶³æ¡ä»¶çš„é¢„çº¦è¡¨
+        
+        doctor = models.Doctor.objects.get(userName = doctorUserName)
+        appointTable.doctorList.remove(doctor)
+        appointTable.save()         #å°†é¢„çº¦è¡¨ä¿å­˜
+        
+        personlist = doctor.appointedPerson
+        person = int(personlist[int(weekdayNum)-1])-1
+        doctor.appointedPerson = personlist[0:int(weekdayNum)-1]+str(person)+personlist[int(weekdayNum):]
+        doctor.save()        
+        
+        patient = models.Patient.objects.get(userName = patientUserName)    #å†æ¬¡è·å¾—å½“å‰ç—…äºº
+        tableList = patient.patient_set.all()   #è·å¾—è¯¥ç—…äººçš„æ‰€æœ‰é¢„çº¦è¡¨
+        if(len(tableList) == 0):
+            return render_to_response('appointManage.html',
+                                  {'login': loginPatient,"noAppoint":1})
+        else:
+            appointItemList = []
+            for i in range(0,len(tableList)):
+                item = appointItem()
+                doctorList = tableList[i].doctorList.all()
+                if(len(doctorList) == 0):
+                    tableList[i].delete()
+                else:
+                    for j in range(0,len(doctorList)):
+                        item.date = str(tableList[i].appintDate)
+                        item.doctor = doctorList[j]
+                        item.patient = patient
+                        item.weekdayNum = weekday[int(tableList[i].weekNumber)]
+                    appointItemList.append(item)
+            if(len(appointItemList) == 0):
+                return render_to_response("appointManage.html",
+                                      {'login': loginPatient,"appointItemList":appointItemList,
+                                       'deleteFlag':deleteFlag,"noAppoint":1})
+            else:
+                return render_to_response("appointManage.html",
+                                      {'login': loginPatient,"appointItemList":appointItemList,
+                                       'deleteFlag':deleteFlag})
+
+            
+def appointManageIntereface(request):
+    global loginPatient,weekday
+    if loginPatient.userName == "login":
+        divisionList = models.Division.objects.all()
+        return render_to_response('mainInterface.html',
+                                  {'login': loginPatient,"divisionList":divisionList})
+    else:
+        patient = models.Patient.objects.get(userName = loginPatient.userName)
+        tableList = patient.patient_set.all()   #è·å¾—è¯¥ç—…äººçš„æ‰€æœ‰é¢„çº¦è¡¨
+        if(len(tableList) == 0):
+            return render_to_response('appointManage.html',
+                                  {'login': loginPatient,"noAppoint":1})
+        else:
+            appointItemList = []
+            for i in range(0,len(tableList)):
+                doctorList = tableList[i].doctorList.all()
+                for j in range(0,len(doctorList)):
+                    item = appointItem()
+                    item.date = str(tableList[i].appintDate)
+                    item.doctor = doctorList[j]
+                    item.patient = patient 
+                    print int(tableList[i].weekNumber)
+                    item.weekdayNum = weekday[int(tableList[i].weekNumber)]
+                    appointItemList.append(item)
+            return render_to_response("appointManage.html",
+                                      {'login': loginPatient,"appointItemList":appointItemList})
+                                      
+def order(request,doctoruserName):
+    global loginPatient,datelist
+    if request.POST:
+        date = request.POST['date']
     doctor = models.Doctor.objects.get(userName = doctoruserName)
     if(loginPatient.userName == 'login'):
            return render_to_response('serviceAppoint.html',
                         {'doctorInformation':doctor, 'nologin':1,
-                        'login':loginPatient.userName})
+                        'login':loginPatient})
                         
     else:
-        
         patient = models.Patient.objects.get(userName = loginPatient.userName)
-        
-#        book = person.book_set.all()
-#        b = models.appointTable.objects.get(appintDate=date)  
-#        b.authors.all()  
-#        b.authors.filter(first_name='Adam') 
-        
         if(int(doctor.appointedPerson[int(date)-1]) == doctor.appointNum):
             return render_to_response('serviceAppoint.html',
                                       {'doctorInformation':doctor,'orderFail':1,
-                    'login':loginPatient.userName,'remind':"no doctor"})
-      
-   #     if(patient.appointeddoctor[t] == 2):
-    #        return render_to_response('serviceAppoint.html',
-     #                                 {'doctorInformation':doctor,'orderFail':1,
-      #              'logins':loginPatient.userName,'remind':"Äú½ñÌìµÄ»ú»áÔ¤Ô¼»ú»áÒÑÂú£¬ÇëÄúÔ¤Ô¼ÆäËûÊ±¼ä"})
-                
-        
+                                       'login':loginPatient,'remind':"è¯¥åŒ»ç”Ÿå·²è¢«é¢„çº¦æ»¡"})
         
         tables1 = patient.patient_set.all()
         tables2 = models.appointTable.objects.filter(weekNumber = date)
         tables = list(set(tables1) & set(tables2))
         if(tables):
             doctorsOrdered = tables[0].doctorList.all()
-            if(doctor in doctorsOrdered):#²é¿´¸ÃÒ½ÉúÊÇ·ñÒÑ¾­±»Ô¤Ô¼
+            if(doctor in doctorsOrdered):#æŸ¥çœ‹è¯¥åŒ»ç”Ÿæ˜¯å¦å·²ç»è¢«é¢„çº¦
                 return render_to_response('serviceAppoint.html',
                                           {'doctorInformation':doctor,'orderFail':1,
-                        'login':loginPatient.userName, 'remind':"yibeyuyue"})
+                                           'login':loginPatient, 'remind':"æ‚¨åœ¨å½“æ—¥å·²é¢„çº¦è¿‡è¯¥åŒ»ç”Ÿ"})
                     
             else:
-                #doctor = models.Doctor.objects.get(userName = doctoruserName)
                 tables[0].doctorList.add(doctor)
                 tag= str(int(doctor.appointedPerson[int(date)-1]) + 1)
                 doctor.appointedPerson = doctor.appointedPerson[0:(int(date)-1)] + tag + doctor.appointedPerson[int(date):]
-  #              patient.appointeddoctor[int(date)] = patient.appointeddoctor[int(date)] + 1
+                doctor.save()
                 return render_to_response('serviceAppoint.html',
                                      {'doctorInformation':doctor, 'ordered':1,
-                                     'login':loginPatient.userName}) 
+                                     'login':loginPatient}) 
         
         else:
-#            table = models.appointTable(patient = patient )
             table = models.appointTable()
             table.patient = patient
             table.save()
             table.doctorList.add(doctor)
             table.weekNumber = date
+            print datelistRever[int(date)]
+            table.appintDate = datelistRever[int(date)]
             table.save()
             tag= str(int(doctor.appointedPerson[int(date)-1]) + 1)
             doctor.appointedPerson = doctor.appointedPerson[0:(int(date)-1)] + tag + doctor.appointedPerson[int(date):]
- #           patient.appointeddoctor[int(date)] = patient.appointeddoctor[int(date)] + 1
+            doctor.save()
             return render_to_response('serviceAppoint.html',
                                      {'doctorInformation':doctor, 'ordered':1,
-                                     'login':loginPatient.userName}) 
+                                     'login':loginPatient}) 
 
                                       
 
 def demandByDoctor(request):
     global loginPatient
     errors = []
+
     if request.POST:
+
+        if "patientName" in request.POST:
+            loginPatient.userName = request.POST["patientName"] 
+
         doctorName = request.POST['doctorName']
+        divisionList = models.Division.objects.all()
         if not doctorName:
-            #errors.append("Please enter the doctor's name!")
-            return render_to_response('mainInterface.html',{'errors1':1,'loginPatient':loginPatient.userName})
+            return render_to_response('mainInterface.html',{'errors1':1,'login':loginPatient,
+                                                            "divisionList":divisionList})
         else:
             doctorList = models.Doctor.objects.filter(name = doctorName)
             if(len(doctorList) > 0):
                 return render_to_response('serviceAppoint.html',
-                        {'doctorName':doctorName,'doctorList':doctorList,'loginPatient':loginPatient.userName})
+                        {'doctorName':doctorName,'doctorList':doctorList,'login':loginPatient})
             else:
-                return render_to_response('serviceAppoint.html',{'doctorName':doctorName,'errors':1,'loginPatient':loginPatient.userName})
+                return render_to_response('serviceAppoint.html',
+                                          {'doctorName':doctorName,'errors':1,'login':loginPatient})
 def demandAllDoctor(request):
     global loginPatient
+    
+    if "patientName" in request.POST:
+        loginPatient.userName = request.POST["patientName"] 
+
     doctorList = models.Doctor.objects.all()
     return render_to_response('serviceAppoint.html',
-                        {'doctorList':doctorList,'loginPatient':loginPatient.userName})
-def detailInformation(reqeust,doctorUserName):
-    global loginPatient
-    doctorInformation = models.Doctor.objects.get(userName = doctorUserName)
+                        {'doctorList':doctorList,'login':loginPatient})
+
+def detailInformation(request,doctorUserName):
+    global loginPatient,wangzhi,datesorts
+    wangzhi=request.get_full_path()
+    doctor = models.Doctor.objects.get(userName = doctorUserName)
+    workTime = doctor.workTime
+    for dates in datesorts:
+        if workTime[int(dates.dates)-1] == "0":
+            dates.flag = "----ä¸ä¸Šç­"
+        else:
+            if(int(doctor.appointedPerson[int(dates.dates)-1]) >= doctor.appointNum):
+                dates.flag = "----å·²æ»¡"
+            else:
+                dates.flag = "----"+doctor.appointedPerson[int(dates.dates)-1] + "/" + str(doctor.appointNum)
+    
     return render_to_response('serviceAppoint.html',
-                              {'doctorInformation':doctorInformation,
-                              'logins':loginPatient.userName,"datelist":datesorts})
+                              {'doctorInformation':doctor,
+                              'login':loginPatient,"datelist":datesorts})
 
 def demandByDivision(request):
     global loginPatient
     errors = []
     if request.POST:
+
+        if "patientName" in request.POST:
+            loginPatient.userName = request.POST["patientName"]
+
         divisionIDTemp = request.POST['divisionType']
         if(divisionIDTemp == "00000"):
             divisionList = models.Division.objects.all()
             return render_to_response('mainInterface.html',
-                   {"divisionList":divisionList,'errors2':1,'loginPatient':loginPatient.userName})
+                   {"divisionList":divisionList,'errors2':1,
+                    'login':loginPatient})
         else:
             divisionTemp = models.Division.objects.get(divisionID = divisionIDTemp)
             doctorList = divisionTemp.doctor_set.all()
             return render_to_response('serviceAppoint.html',
-                    {'divisionName':divisionTemp.name,'doctorList':doctorList,'loginPatient':loginPatient.userName})
+                    {'divisionName':divisionTemp.name,'doctorList':doctorList,'login':loginPatient})
             
 def demandByIllness(request):
     errors = []
     if request.POST:
+
+        if "patientName" in request.POST:
+            loginPatient.userName = request.POST["patientName"]
+
         illnessName = request.POST["illnessName"]
         illnessList = models.Illness.objects.filter(name__contains = illnessName)
+        divisionList = models.Division.objects.all()
         if(not illnessName):
-            return render_to_response("patient.html",{"noEnter":1})
+            return render_to_response("mainInterface.html",{"divisionList":divisionList,"noEnter":1})
         elif(len(illnessList) == 0):
-            return render_to_response("patient.html",{"noIllness":1})
+            return render_to_response("mainInterface.html",{"divisionList":divisionList,"noIllness":1})
         else:
             illness = illnessList[0]
             doctorList = illness.doctor.all()
@@ -437,28 +569,80 @@ def patientHome(request):
                                   {"noLogin":1,"divisionList":divisionList})
     else:
         patient = models.Patient.objects.get(userName = loginPatient.userName)
-        return render_to_response("patientHome.html",{"patient":patient})
+        return render_to_response("patientHome.html",{"patient":patient,"login":loginPatient})
+        
+def PchangeSelfInfo(request):
+    flag = 0
+    global loginPatient
+    patient = models.Patient.objects.get(userName = loginPatient.userName)
+    if(not patient.sex):
+        flag = 1
+    return render_to_response("patientChangeInfo.html",
+                             {"login":loginPatient,"patient":patient,"flag":flag}) 
+
+def updataPatientInfoSuccess(request):
+    global loginPatient
+    if request.POST:
+        patient = models.Patient.objects.get(userName = request.POST["patientUserName"])
+        nameTemp = request.POST["patientName"]
+                
+        if (not nameTemp):
+            return render_to_response("patientChangeInfo.html",{"noName":1})
+        else:
+            patient.name = nameTemp
+        
+        ageTemp = request.POST["patientAge"]
+        if(ageTemp):
+            patient.age = int(ageTemp)
+        if(not ageTemp):
+            patient.age = None
+        
+        if "patientSex" in request.POST:
+            patient.sex = request.POST["patientSex"]
+        
+        patient.phoneNumber = request.POST["patientPhone"]
+        patient.save()
+        return render_to_response("patientHome.html",
+                              {"login":loginPatient,"patient":patient,
+                              "changeSuccess":1})
+
+def PchangePassword(request,patientUserName):
+    global loginPatient
+    loginPatient.userName = patientUserName
+    patient = models.Patient.objects.get(userName = patientUserName)
+    return render_to_response("PchangePassword.html",
+                              {"login":loginPatient,"patient":patient})   
+
+def PchangePasswordSuccess(request):
+    global loginPatient      
+    errors = []
+    if request.POST:
+        password = request.POST['newPassword']
+        confirmPassword = request.POST['confirmPassword']
+        patientUserName = request.POST['patientUserName']
+        patient = models.Patient.objects.get(userName = patientUserName)
+        if(confirmPassword != password):
+            errors.append("ç¡®è®¤å¯†ç ä¸æ­£ç¡®ï¼")
+        elif((not confirmPassword) or (not password)):
+            errors.append("è¯·è¾“å…¥å¯†ç ï¼")
+        else:
+            patient.Password = password
+            patient.save()
+            return render_to_response("PchangePassword.html",
+                              {"login":loginPatient,"patient":patient,"changeSuccess":1})   
+        return render_to_response("pchangePassword.html",
+                              {"login":loginPatient,"patient":patient,"errors":errors}) 
+                              
 def RegisterServiceInterface(request):
     global loginPatient
     if loginPatient.userName == "login":
         divisionList = models.Division.objects.all()
         return render_to_response('mainInterface.html',
-                                  {'login': loginPatient.userName,"divisionList":divisionList})
+                                  {'login': loginPatient,"divisionList":divisionList})
     else:
         allDivisionList = models.Division.objects.all()
         return render_to_response('patient.html',
                                   {'login': loginPatient,"allDivisionList":allDivisionList})
-
-def appointManageIntereface(request):
-    global loginPatient
-    if loginPatient.userName == "login":
-        divisionList = models.Division.objects.all()
-        return render_to_response('mainInterface.html',
-                                  {'login': loginPatient.userName,"divisionList":divisionList})
-    else:
-        allDivisionList = models.Division.objects.all()
-        return render_to_response('appointManage.html',
-                                  {'login': loginPatient.userName,"allDivisionList":allDivisionList})
 
 def aboutIntereface(request):
     global loginPatient
@@ -499,7 +683,7 @@ def changeSelfInfo(reqeust):
             workday.append(weekday[i+1])
         else:
             noWorkday.append(weekday[i+1])
-    return render_to_response("DoctorChangeInfo.html",
+    return render_to_response("doctorChangeInfo.html",
                              {"loginDoctor":loginDoctor,"doctor":doctor,"flag":flag,
                               "division":division,"allDivisionList":allDivisionList,
                               "workday":workday,"noWorkday":noWorkday}) 
@@ -530,25 +714,25 @@ def updataDoctorInfoSuccess(request):
         
         doctor.intro = request.POST["doctorIntro"]
         
-        divisionIDTemp = request.POST["doctorDivision"] #ĞÂÊäÈëµÄ¿ÆÊÒ
-        divisionTemp = doctor.division                  #Ò½ÉúÔ­À´ËùÔÚµÄ¿ÆÊÒ
+        divisionIDTemp = request.POST["doctorDivision"] #æ–°è¾“å…¥çš„ç§‘å®¤
+        divisionTemp = doctor.division                  #åŒ»ç”ŸåŸæ¥æ‰€åœ¨çš„ç§‘å®¤
         if(divisionIDTemp == divisionTemp.divisionID):
             doctor.division = doctor.division
         else:
-            divisionTemp1 = models.Division.objects.get(divisionID = divisionIDTemp) #ÕÒµ½ËùÑ¡ĞÂ¿ÆÊÒ
-            doctor.division = divisionTemp1 #ÎªÒ½Éú»»ĞÂ¿ÆÊÒ
-            illnessList = doctor.illness_set.all()#»ñµÃ¸ÃÒ½ÉúÃûÏÂµÄËùÓĞ¼²²¡
+            divisionTemp1 = models.Division.objects.get(divisionID = divisionIDTemp) #æ‰¾åˆ°æ‰€é€‰æ–°ç§‘å®¤
+            doctor.division = divisionTemp1 #ä¸ºåŒ»ç”Ÿæ¢æ–°ç§‘å®¤
+            illnessList = doctor.illness_set.all()#è·å¾—è¯¥åŒ»ç”Ÿåä¸‹çš„æ‰€æœ‰ç–¾ç—…
             if len(illnessList) == 0:
-                noIllness = 1   #ÎŞÓÃ
+                noIllness = 1   #æ— ç”¨
             else:
                 for i in range(0,len(illnessList)):
-                    illnessList[i].doctor.remove(doctor)    #Îª¸ÃÒ½ÉúµÄËùÓĞ¼²²¡É¾³ı¸ÃÒ½Éú
+                    illnessList[i].doctor.remove(doctor)    #ä¸ºè¯¥åŒ»ç”Ÿçš„æ‰€æœ‰ç–¾ç—…åˆ é™¤è¯¥åŒ»ç”Ÿ
         
         doctor.workTime = "0000000"
         
         workday = request.POST.getlist("doctorWorkTime")
         for i in range(0,len(workday)):
-            temp = workday[i]
+            temp = str(workday[i])
             index = weekdayRever[temp]-1
             temp1 = doctor.workTime[0:index] + "1" + doctor.workTime[(index+1):7]
             doctor.workTime = temp1
@@ -565,12 +749,12 @@ def updataDoctorInfoSuccess(request):
         if(not upperNum):
             return render_to_response("doctorChangeInfo.html",{"noUpperNum":1})
         else:
-            doctor.appointNum = int(upperNum)       #¸üĞÂĞÅÏ¢²¢±£´æ
+            doctor.appointNum = int(upperNum)       #æ›´æ–°ä¿¡æ¯å¹¶ä¿å­˜
         
         doctor.save()
         
         doctor = models.Doctor.objects.get(userName = request.POST["doctorUserName"])
-        workday = []                                #ÏÔÊ¾¸üĞÂºóµÄĞÅÏ¢
+        workday = []                                #æ˜¾ç¤ºæ›´æ–°åçš„ä¿¡æ¯
         noWorkday = []
         division = doctor.division
         for i in range(0,len(doctor.workTime)):
@@ -608,7 +792,31 @@ def DchangePasswordSuccess(request):
                               {"loginDoctor":loginDoctor,"doctor":doctor,"changeSuccess":1})   
         return render_to_response("DchangePassword.html",
                               {"loginDoctor":loginDoctor,"doctor":doctor,"errors":errors})    
+
+def returnAppointList(request,doctorUserName):
+    global loginDoctor
+    flag0 = 0
+    user = models.Doctor.objects.get(userName = doctorUserName)
+    if user.workTime == "0000000":
+        flag0 = 1
+    
+    if((not user.name)or(not user.sex)or(not user.sex)or(not user.sex)
+        or(not user.sex)or(not user.phoneNumber)or(not user.intro)
+        or flag0 == 0 or (not user.appointNum)):
+        fillInfo = 1
         
+    appointedList = DoctorSearchAppoint(user)
+    if(len(appointedList) == 0):
+        noAppointed = 1
+    else:
+        noAppointed = 0
+    return render_to_response("DoctorInterface.html",
+                              {"User":user,"loginDoctor":loginDoctor,
+                              "fillInfo":fillInfo,"noAppointed":noAppointed,
+                              "appointedList":appointedList})
+
+
+
 def loginVerify(request):
     errors = []
     divisionList = models.Division.objects.all()
@@ -632,6 +840,7 @@ def loginVerify(request):
                 patient.userName = request.POST['userName']
                 patient.Password = request.POST['Password']
                 patient.userCategory = request.POST["serviceType"]
+                patient.name = "æœªå‘½å"
                 patient.save()
                 string = "Registered successfully!"
                 return render_to_response('mainInterface.html',
@@ -655,7 +864,9 @@ def loginVerify(request):
                 tempDivision = models.Division.objects.get(divisionID = request.POST["divisionType"])
                 doctor.division = tempDivision
                 doctor.workTime = "0000000"
-                doctor.appointedPerson = "0000000"                
+                doctor.appointedPerson = "0000000"
+                doctor.appointNum = 5
+                doctor.name = "æœªå‘½å"
                 doctor.save()
                 string = "Registered successfully!"
                 return render_to_response('mainInterface.html',
@@ -667,20 +878,19 @@ def exitApp(request):
     global loginPatient
     loginPatient.userName = "login"
     divisionList = models.Division.objects.all()
-    return render_to_response('mainInterface.html',{'login': loginPatient.userName,
+    return render_to_response('mainInterface.html',{'login': loginPatient,
                                                     "divisionList":divisionList})
        
 def register(request):
-    global loginPatient,URL
+    global loginPatient,wangzhi
     flag0 = 0
-    flag1 = 0
     errors = []
     if (request.POST):
         tempName = request.POST['userName']
         tempPassword = request.POST['Password']
         tempCategory = request.POST['serviceType']
         if not tempName:
-            errors.append("The user name can't be empty!")
+            errors.append("ç”¨æˆ·åä¸èƒ½ä¸ºç©ºï¼")
             #return render_to_response('mainInterface.html',{'errors':errors}) 
         else:
             if(tempCategory == '2'):
@@ -691,11 +901,11 @@ def register(request):
                         allDivisionList = models.Division.objects.all()
                         return render_to_response("patient.html",
                                                   {'login':loginPatient,"allDivisionList":allDivisionList,
-                                                  "URL":URL})
+                                                  "URL":wangzhi})
                     else:
-                        errors.append("The user name or password is not correct!")
+                        errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
                 except models.Patient.DoesNotExist:
-                    errors.append("The user name or password is not correct!")
+                    errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
                 #return render_to_response('mainInterface.html',{'errors':errors})
             if(tempCategory == '1'):
                 try:        
@@ -710,14 +920,20 @@ def register(request):
                             or(not user.sex)or(not user.phoneNumber)or(not user.intro)
                             or flag0 == 0 or (not user.appointNum)):
                             fillInfo = 1
-                        
+                            
+                        appointedList = DoctorSearchAppoint(user)
+                        if(len(appointedList) == 0):
+                            noAppointed = 1
+                        else:
+                            noAppointed = 0
                         return render_to_response("DoctorInterface.html",
-                                                  {"User":user,"loginDoctor":loginDoctor.userName,
-                                                  "fillInfo":fillInfo})
+                                                  {"User":user,"loginDoctor":loginDoctor,
+                                                  "fillInfo":fillInfo,"noAppointed":noAppointed,
+                                                  "appointedList":appointedList})
                     else:
-                        errors.append("The user name or password is not correct!")
+                        errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
                 except models.Doctor.DoesNotExist:
-                    errors.append("The user name or password is not correct!")
+                    errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
                 #return render_to_response('mainInterface.html',{'errors':errors})
             if(tempCategory == '0'):
                 try:        
@@ -725,13 +941,13 @@ def register(request):
                     if(user.Password == tempPassword):
                         return render_to_response("administrator.html",{"User":user})
                     else:
-                        errors.append("The user name or password is not correct!")
+                        errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
                 except models.Administrator.DoesNotExist:
-                    errors.append("The user name or password is not correct!")
+                    errors.append("ç”¨æˆ·åæˆ–å¯†ç ä¸æ­£ç¡®ï¼")
         return render_to_response('mainInterface.html',{'errors':errors})
     divisionList = models.Division.objects.all()
     return render_to_response('mainInterface.html',
-                              {'login': loginPatient.userName,"divisionList":divisionList})         
+                              {'login': loginPatient,"divisionList":divisionList})         
    
     
     

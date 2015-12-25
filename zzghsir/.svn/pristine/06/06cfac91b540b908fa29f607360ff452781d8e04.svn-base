@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta charset = "utf-8">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>疾病更新</title>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p>疾病更新</p>
+
+	<form  action="/updataIllnessSuccess/" method="post">
+			疾病名称：{{illness.name}}<BR>
+					  <input type = "hidden"  name = "illnessdName" value = {{illness.name}}>
+			所属科室：{{division}}<BR>
+			          <input type = "hidden"  name = "illnessdDivision" value = {{illness.division}}>
+
+			疾病描述：<textarea class = "vLargeTextField"  name = "illnessDescription" clos = "200" rows = "10">{{illness.description}}</textarea><BR>
+
+	        所属医生：{{alreadyLen}}位<BR>
+	        	{%for doctor in alreadyAddedDoctor%}
+	        		<p>{{doctor.name}}</p>
+	        	{%endfor%}
+
+	        待添加医生：{{allowLen}}位<BR>
+	        	{%for doctor in allowAddDoctor%}
+	        		<input type="checkbox" name="doctorName"  value = {{doctor.userName}} />{{doctor.name}}<br>
+	        	{%endfor%}
+			<input type="submit" value="保存" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+	</form>
+
+
+
+	
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 align="center">
+				Self-illness-registration------自助预约挂号系统
+			</h2>
+			<p style="text-align:center">
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 """
-Django settings for zzghsir project.
+Django settings for self1 project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -10,35 +10,25 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import os.path
-from os import environ
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 HERE = os.path.dirname(os.path.abspath(__file__))  
 HERE = os.path.join(HERE, '../') 
-
+import os.path   
+import sae.const  
+from os import environ  
+   
+MYSQL_DB = sae.const.MYSQL_DB   
+MYSQL_USER = sae.const.MYSQL_USER   
+MYSQL_PASS = sae.const.MYSQL_PASS   
+MYSQL_HOST_M = sae.const.MYSQL_HOST   
+MYSQL_HOST_S = sae.const.MYSQL_HOST_S   
+MYSQL_PORT = sae.const.MYSQL_PORT
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(v8*=@kqq%!e%a(xpy5@gndei(9as$jz5u&g6y%(elus6y^#g9'
 
-debug = not environ.get("zzghsir","")
-
-if debug:
-    MYSQL_DB = 'zzghsir'
-    MYSQL_USER = 'kalus'
-    MYSQL_PASS = 'ky'
-    MYSQL_HOST_M = '127.0.0.1'
-    MYSQL_HOST_S = '127.0.0.1'
-    MYSQL_PORT = 's3306'
-else:
-    import sae.const
-    MYSQL_DB = sae.const.MYSQL_DB 
-    MYSQL_USER = sae.const.MYSQL_USER 
-    MYSQL_PASS = sae.const.MYSQL_PASS 
-    MYSQL_HOST_M = sae.const.MYSQL_HOST 
-    MYSQL_HOST_S = sae.const.MYSQL_HOST_S 
-    MYSQL_PORT = sae.const.MYSQL_PORT
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -79,20 +69,15 @@ WSGI_APPLICATION = 'zzghsir.wsgi.application'
 
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': MYSQL_DB,
-    'USER': MYSQL_USER,
-    'PASSWORD': MYSQL_PASS,
-    'HOST': MYSQL_HOST_M,
-    'PORT': MYSQL_PORT,
+        'ENGINE': 'django.db.backends.mysql',   
+        'NAME': MYSQL_DB,   
+        'USER': MYSQL_USER,   
+        'PASSWORD': MYSQL_PASS,   
+        'HOST': MYSQL_HOST_M,   
+        'PORT': MYSQL_PORT,
     }
 }
 
-DEFAULT_CHARSET='utf-8' 
-
-ALLOWED_HOSTS = [
-                 '.sinaapp.com',
-                 ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -109,13 +94,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_PATH = os.path.join(os.path.dirname(__file__), '../image').replace('\\','/')
+
+STATIC_PATH = ('./static'
+    )
 STATIC_URL = '/static/'
+STATIC_ROOT = ''
 TEMPLATE_DIRS = (
 
     os.path.join(BASE_DIR, '../templates').replace('\\', '/'),
     BASE_DIR + '/templates/',
     )
 STATICFILES_DIRS = (
-    './image/'
+    BASE_DIR + '/static/',
 )

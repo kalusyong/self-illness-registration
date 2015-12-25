@@ -1,16 +1,17 @@
 <html>
 <head>
-
+<meta charset = "utf-8">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
 <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
 <title>SIR-自助挂号系统</title>
 </head>
-<body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+<body>
 <table> 
-	<tr><td> <a href="/mainInterface/">{{login}}</a></td>
-    <td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
+	<tr><td> <a href="/mainInterface/">{{login.userName}}</a></td>
+    <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
     <td><a href="/exit/">退出</a></td></tr>
 </table>
 <div class="container-fluid">
@@ -19,7 +20,7 @@
 			<div class="row-fluid">
 				<div class="col-xs-6 span9">
 					<h3>
-						SIR------自助挂号系统
+						Self-illness-registration------自助挂号系统
 					</h3>
 				</div>
 				<div class="col-xs-6 span3">
@@ -33,19 +34,15 @@
 				<li class="active">
 				  <a href="/mainInterface/">返回首页</a>
 			    </li>
-
 				<li>
 					<a href="/RegisterService/">挂号服务</a>				
 				</li>
-
 				<li>
 					<a href="/appointManage/">预约管理</a>				
 				</li>
-
 				<li>
-					<a href="#">最新资讯</a>				
+					<a href="/news1/">最新资讯</a>				
 				</li>
-
 				<li>
 					<a href="/about/">关于</a>				
 				</li>
@@ -58,26 +55,29 @@
 							最新资讯
 						</li>
 						<li>
-							<a href="#">糖尿病如何治疗？</a>
+							<a href="/news1/">糖尿病如何治疗？</a>
 						</li>
 						<li>
-							<a href="#">张秀珍医生抢先预约</a>
+							<a href="/news2/">张秀珍医生抢先预约</a>
 						</li>
 						<li>
-							<a href="#">未来两年医疗行业就业行情</a>
+							<a href="/news3/">2015医疗招聘考试政策</a>
 						</li>
 					</ul>
 				</div>
-				
 				<div class="span5">
 					<form class="form-horizontal" action = "/register/" method = "post">
 						{%if string%}
-    						<p><li>{{string}}<li></p>
+							<Script Language="JavaScript">
+								alert("{{string}}！！");
+							</Script>
 						{%endif%}
 
 						{% if errors %}
     						{% for error in errors %}
-        					<li>{{error}}</li>
+    							<Script Language="JavaScript">
+								alert("{{error}}！！");
+								</Script>
     						{% endfor %}
 						{% endif %}
 
@@ -122,16 +122,20 @@
 	<div class="row-fluid">
 		<div class="span7">
 			{%if errors1 %}
-                <li>请输入医生姓名</li>
+				<Script Language="JavaScript">
+					alert("请输入医生姓名！！");
+				</Script>
             {% endif %}
 			<form name="input" action="/demandByDoctor/" method="post">
 				按医生查询: <input type="text" name="doctorName">
-				<input type="submit" value="点击查询">
+				<input type="submit" value="点击查询" class="button">
 				<a href="/demandAllDoctor/">所有医生</a>
 			</form>
 
 			{%if errors2 %}
-                <li>请选择科室</li>
+				<Script Language="JavaScript">
+					alert("请选择科室！！");
+				</Script>
             {% endif %}
 			<form name="input" action="/demandByDivision/" method="post">
 				按科室查询: 
@@ -141,14 +145,23 @@
                         	<option value = {{division.divisionID}}>{{division.name}}</option>
                         {%endfor%}
                     </select>
-				<input type="submit" value="点击查询">
+				<input type="submit" value="点击查询" class="button">
 			</form>
 
+			{%if noEnter %}
+				<Script Language="JavaScript">
+					alert("请输入疾病姓名！！");
+				</Script>
+            {%elif noIllness%}
+            	<Script Language="JavaScript">
+					alert("你搜索的疾病不存在！！");
+				</Script>
+            {% endif %}
 			<form name="input" action="/demandByIllness/" method="post">
 				按疾病查询: <input type="text" name="illnessName">
-				<input type="submit" value="点击搜索">
-				<a href="#">所有疾病</a>
+				<input type="submit" value="点击查询" class="button">
 			</form>
+			
 		</div>
 		<div class="span5">
 			<ul class="nav nav-list well">
@@ -156,10 +169,10 @@
 					常见问题
 				</li>
 				<li>
-					<a href="#">如何进行预约？</a>
+					<a href="/problem1/">如何进行预约？</a>
 				</li>
 				<li>
-					<a href="#">预约成功了，下一步该怎么做？</a>
+					<a href="/problem2/">预约成功了，下一步该怎么做？</a>
 				</li>
 			</ul>
 		</div>
@@ -167,9 +180,9 @@
 	<hr/>
 	<div class="row-fluid">
 		<div class="span12">
-			<h2 align="center">
+			<p style="text-align:center">
 				Self-illness-registration------自助预约挂号系统
-			</h2>
+			<p>
 			<p style="text-align:center">
 				地址：哈尔滨市南岗区西大直街92号
 			</p>

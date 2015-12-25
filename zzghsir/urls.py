@@ -27,7 +27,13 @@ urlpatterns = patterns('',
     url(r'^order/(.+)/$',views.order),
     url(r'^exit/$',views.exitApp),
     
-    url(r'^deleteDoctor/(.+)/$',views.deleteAppointDoctor),
+    url(r'^deleteDoctor/$',views.deleteAppointDoctor),
+    
+    
+    url(r'^PchangePasswordSuccess/$',views.PchangePasswordSuccess),
+    url(r'^PchangePassword/(.+)/$',views.PchangePassword),
+    url(r'^updataPatientInfoSuccess/$',views.updataPatientInfoSuccess),
+    url(r'^PchangeSelfInfo/$',views.PchangeSelfInfo),
     url(r'^patientHome/$',views.patientHome),
     
     url(r'^doctorHome/(.+)/$',views.doctorHome),
@@ -35,6 +41,8 @@ urlpatterns = patterns('',
     url(r'^updataDoctorInfoSuccess/$',views.updataDoctorInfoSuccess),
     url(r'^DchangePassword/$',views.DoctorchangePassword),
     url(r'^DchangePasswordSuccess/$',views.DchangePasswordSuccess),
+    url(r'^returnAppointList/(.+)/$',views.returnAppointList),
+    
     #按条件查询
     url(r'^demandByDoctor/$',views.demandByDoctor),
     url(r'^demandAllDoctor/$',views.demandAllDoctor),    
@@ -47,6 +55,13 @@ urlpatterns = patterns('',
     url(r'^saveNews/$',views.saveNews),
     url(r'^deleteNews/(.+)/$',views.deleteNews),
     url(r'^showNews/(.+)/$',views.showNews),
+
+    url(r'^news1/$',views.news1),
+    url(r'^news2/$',views.news2),
+    url(r'^news3/$',views.news3),
+
+    url(r'^problem1/$',views.problem1),
+    url(r'^problem2/$',views.problem2),
     #管理科室    
     url(r'^register/manageDivision/$',views.manageDivisionInterface),
     url(r'^addDivision/$',views.addDivision),
@@ -66,7 +81,6 @@ urlpatterns = patterns('',
     url(r'^deleteIllness/(.+)/$',views.deleteIllness),
     url(r'^illnessDetailInfo/(.+)/$',views.illnessDetailInfomation),    
     url(r'^updataIllnessSuccess/$',views.updataIllnessSuccess),
-    url(r'^image/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATICFILES_DIRS,'show_indexes': True}),
     
     
     

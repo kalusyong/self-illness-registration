@@ -1,0 +1,104 @@
+<html>
+<head>
+<meta charset = "utf-8">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-医生列表</title>
+</head>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					{%if loginDoctor%}
+						<p>欢迎您：<a href="/doctorHome/{{User.userName}}/">{{User.userName}}</a></p>
+						<p><a href="#">退出</a></p>
+					{%endif%}
+
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+	{%if fillInfo %}
+		<p><div style = "color:red">为了方便病人预约，请尽快完善您的信息</div></p>
+	{%endif%}
+
+	<h2>当前登录医生：{{User.name}}</h2>
+
+    {%if noAppointed%}
+	    <table align = "center">
+	            <tr align = "center"><td><p><b><Font size = "4" color = "red">当前最近没有预约</Font></p></tr></td>
+	    </table>
+	{%endif%}
+
+    {% if appointedList %}
+	<div class="row-fluid">
+		<div class="span2">
+		</div>
+		<div class="span8">
+			<p>您有 {{ appointedList | length}} 位预约患者</p>
+			<table class="table table-hover table-bordered">
+                <thead>
+					<tr>
+						<th>
+							患者
+						</th>
+						<th>
+							时间
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in appointedList %}
+	        		<tr>
+						<td>
+							{{item.patient.name}}</a>
+						</td>
+						<td>
+							{{item.date}}({{item.weekdayNum}})
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="span2">
+		</div>
+	</div>
+	<hr/>
+    {% endif %}
+
+	<footer>
+			<p>
+				Self-illness-registration------自助预约挂号系统
+			</p>
+			<p>
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+	</footer>
+</div>
+</body>
+</html>

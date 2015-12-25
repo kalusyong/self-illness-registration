@@ -1,14 +1,27 @@
 <html>
 <head>
+<meta charset = "utf-8">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
 <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
 <title>SIR-预约管理</title>
 </head>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
 <body>
 <table> 
-	<tr><td> <a href="/patientHome/">{{login}}</a></td>
+	<tr><td> <a href="/patientHome/">{{login.userName}}</a></td>
 	<td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
 	<td><a href="/exit/">退出</a></td>
 	</tr>
@@ -40,7 +53,7 @@
 					<a href="/appointManage/">预约管理</a>
 				</li>
 				<li>
-					<a href="#">最新资讯</a>
+					<a href="/news1/">最新资讯</a>
 				</li>
 				<li>
 					<a href="/about/">关于</a>
@@ -48,26 +61,32 @@
 			</ul>
 		</div>
 	</div>
-
+	{% if deleteFlag %}
     <table align="center">
-        {% if deleteFlag %}
-            <p><tr align="center"><td>删除成功</tr></td></p>
-        {% endif %}
+        <p><tr align="center"><td>删除成功</tr></td></p>
     </table>
+	{% endif %}
 
-    {% if doctorList %}
+    {%if noAppoint%}
+	    <table align = "center">
+	            <tr align = "center"><td><p><b><Font size = "4" color = "red">您还没有预约医生</Font></p></tr></td>
+	    </table>
+	{%endif%}
+
+    {% if appointItemList %}
 	<div class="row-fluid">
 		<div class="span2">
 		</div>
 		<div class="span8">
+			<p>您共预约 {{ appointItemList | length}} 位医生</p>
 			<table class="table table-hover table-bordered">
-				<tr align="center"><td>
-                	<p>您共预约 {{ doctorList | length}} 位医生</p>
-            	</tr></td>
-				<thead>
+                <thead>
 					<tr>
 						<th>
 							已预约医生
+						</th>
+						<th>
+							时间
 						</th>
 						<th>
 							操作
@@ -75,13 +94,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for doctor in doctorList %}
+					{% for item in appointItemList %}
 	        		<tr>
 						<td>
-							<a href="/detailInformation/{{ doctor.userName }}/">{{ doctor.name }}</a>
+							<a href="/detailInformation/{{item.doctor.userName}}/">{{item.doctor.name}}</a>
 						</td>
 						<td>
-							<td><a href="/deleteDoctor/{{ doctor.userName }}/">取消挂号</a></td>
+							{{item.date}}({{item.weekdayNum}})
+						</td>
+						<td>
+							<form name="input" action="/deleteDoctor/" method="post">
+								<input type="hidden" value = {{item.doctor.userName}} name="doctorUserName">
+								<input type="hidden" value = {{item.weekdayNum}} name="weekdayNum">
+								<input type="submit" value = "取消挂号">
+							</form>
 						</td>
 					</tr>
 					{% endfor %}
@@ -92,23 +118,17 @@
 		</div>
 	</div>
 	<hr/>
-	{% else %}
-		<table align = "center">
-            <tr align = "center"><td><p><b><Font size = "4" color = "red">您还没有预约医生</Font></p></tr></td>
-        </table>
     {% endif %}
 
 
-	<div class="row-fluid">
-		<div class="span12">
-			<h2 align="center">
+	<footer>
+			<p>
 				Self-illness-registration------自助预约挂号系统
-			</h2>
+			</p>
 			<p style="text-align:center">
 				地址：哈尔滨市南岗区西大直街92号
 			</p>
-		</div>
-	</div>
+	</footer>
 </div>
 </body>
 </html>

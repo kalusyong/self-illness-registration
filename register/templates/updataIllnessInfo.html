@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
+<meta charset = "utf-8">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
 <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
@@ -18,14 +19,15 @@
 	clear:both;
 }
 </style>
-<body style="background-image:url(../image/background.jpg);background-repeat:repeat-x; background-attachment: fixed;">
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+<body>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="row-fluid">
 				<div class="col-xs-6 span9">
 					<h3>
-						SIR------自助挂号系统
+						Self-illness-registration------自助挂号系统
 					</h3>
 				</div>
 				<div class="col-xs-6 span3">
@@ -36,7 +38,6 @@
 			</div>
 		</div>
 	</div>
-	<center>
 	<p>更新疾病信息</p>
 	{%if updataSuccess%}
 		<p><div style = "color:red">更新{{illnessName}}成功</div></p>
@@ -67,7 +68,7 @@
 	</form>
 
 	<a href="/updataIllnessInfo/">所有疾病</a>
-	</center>
+
 	{%if deleteSuccess%}
 		<p>删除成功</p>
 	{%endif%}
@@ -206,12 +207,12 @@
 
 	
 	<footer>
-		<p>
-			Self-illness-registration------自助预约挂号系统
-		</p>
-		<p >
-			地址：哈尔滨市南岗区西大直街92号
-		</p>
+			<p>
+				Self-illness-registration------自助预约挂号系统
+			</p>
+			<p>
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
 	</footer>
 </div>
 </body>

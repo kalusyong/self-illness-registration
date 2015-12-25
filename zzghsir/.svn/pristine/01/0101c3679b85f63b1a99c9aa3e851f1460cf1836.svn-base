@@ -1,0 +1,97 @@
+<html>
+<head>
+<meta charset = "utf-8">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>用户修改密码</title>
+</head>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+||||||| .r34
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+=======
+>>>>>>> .r38
+<body>
+{%if login%}
+	<p>欢迎您：{{login.userName}}</a></p>
+	<p><a href="/exit/">退出</a></p>
+{%endif%}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+			<ul class="nav nav-pills">
+				<li>
+					<a href="/mainInterface/">返回首页</a>
+				</li>
+				<li>
+					<a href="/RegisterService/">挂号服务</a>
+				</li>
+				<li>
+					<a href="/appointManage/">预约管理</a>
+				</li>
+				<li>
+					<a href="#">最新资讯</a>
+				</li>
+				<li>
+					<a href="/about/">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<h2>当前登录用户：{{patient.name}}</h2>
+	{%if changeSuccess%}
+		<p>修改密码成功</p>
+	{%endif%}
+
+	{%if errors%}
+		{%for error in errors%}
+			<li>{{error}}</li>
+		{%endfor%}
+	{%endif%}
+	<form  action="/PchangePasswordSuccess/" method="post">
+			用户名：{{patient.userName}}<BR>
+					  <input type = "hidden"  name = "patientUserName" value = {{patient.userName}}>
+			密码：{{patient.Password}}<BR>
+			          <input type = "hidden"  name = "patientPassWord" value = {{patient.Password}}>
+			新密码：<input type = "password"  name = "newPassword">
+			确认密码：<input type = "password"  name = "confirmPassword">
+			
+			<input type="submit" value="保存" class="btn" style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/>
+	</form>
+
+	<footer>
+			<p>
+				Self-illness-registration------自助预约挂号系统
+			</p>
+			<p>
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+	</footer>
+</div>
+</body>
+</html>

@@ -55,6 +55,9 @@ class appointTable(models.Model):
     weekNumber = models.CharField(max_length = 5)
     appintDate = models.DateField(blank=True,null=True)
     
+    class Meta:
+        ordering = ['appintDate'] 
+    
     
     
     

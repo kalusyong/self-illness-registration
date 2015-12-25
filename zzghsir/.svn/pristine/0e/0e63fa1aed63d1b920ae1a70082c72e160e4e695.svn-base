@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta charset = "utf-8">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<title>SIR-医生列表</title>
+</head>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
+<body>
+
+<table> <tr><td> <a href="/patientHome/">{{login.userName}}</a></td>
+	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+	<td><a href="/exit/">退出</a></td>
+</tr></table>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="col-xs-6 span9">
+					<h3>
+						Self-illness-registration------自助挂号系统
+					</h3>
+				</div>
+				<div class="col-xs-6 span3">
+					<h5 class="text-right text-info">
+						投诉电话：010-86347890
+					</h5>
+				</div>
+			</div>
+
+
+			<ul class="nav nav-pills">
+				<li>
+					<a href="/mainInterface/">返回首页</a>
+				</li>
+				<li class="active">
+					<a href="/RegisterService/">挂号服务</a>
+				</li>
+				<li>
+					<a href="/appointManage/">预约管理</a>
+				</li>
+				<li>
+					<a href="/news1/">最新资讯</a>
+				</li>
+				<li>
+					<a href="/about/">关于</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	    
+
+	{% if doctorInformation %}
+		<table align="center">
+			<tr align="center"><td>姓名：</td><td>{{doctorInformation.name}}</td></tr>
+			<tr align="center"><td>性别：</td><td>{{doctorInformation.sex}}</td></tr>
+			<tr align="center"><td>年龄：</td><td>{{doctorInformation.age}}</td></tr>
+			<tr align="center"><td>科室：</td><td>{{doctorInformation.division}}</td></tr>
+			<tr align="center"><td>简介：</td><td>{{doctorInformation.intro}}</td></tr>
+			<tr align="center"><td>电话：</td><td>{{doctorInformation.phoneNumber}}</td></tr>
+			
+			{% if nologin %}
+				<Script Language="JavaScript">
+					alert("用户未登录");
+				</Script>
+	        	//<tr align="center"><td><Font color = "red"><strong>用户未登录</td></tr>
+	            <tr align="center"><td><a href="/mainInterface/">请点击登录</a></td></tr>
+	        {% elif ordered %}
+	            <tr align="center"><td>预约成功</td></tr>
+	            <tr align="center"><td><a href="/appointManage/">点击查看预约</a></td></tr>
+	        {% elif orderFail %}
+				<tr  align="center"><td><div style="color:red">{{remind}}</td></tr>
+	        {% else %}
+			    <form name="input" action="/order/{{doctorInformation.userName}}/" method="post">
+				请选择日期: 
+					<select class = "txt-s" size = "1" name = "date">
+                        <option value = "00000">---无---</option>
+                        {%for date in datelist%}
+                       		<option value = {{date.dates}}>{{date.week}}{{date.flag}}</option>
+                        {%endfor%}
+                    </select>
+				<input type="submit" value="点击预约">
+			    </form>
+	        {% endif %}
+		</table>
+	{% endif %}
+
+	
+	
+	<div style="text-align:center;">
+	{% if errors %}
+		<p><div style = "color : red">你搜索的医生不存在</div></p>	
+	{%endif%}
+
+	{% if doctorList%}
+		{% if divisionName %}
+			<h3><b>你搜索的科室是: <strong>{{divisionName}}</strong></h3>
+		{% elif doctorName %}
+			<h3><b>你搜索的医生是: <strong>{{doctorName}}</strong></h3>
+		{% elif illnessName %}
+			<h3><b>你搜索的疾病是: <strong>{{illnessName}}</strong></h3>
+		{%endif%}
+		<p>共找到 {{ doctorList | length}} 位医生</p>
+	<div class="row-fluid">
+		<div class="span2">
+		</div>
+		<div class="span8">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>
+							医生列表
+						</th>
+						<th>
+							详细信息
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for doctor in doctorList %}
+	        		<tr>
+						<td>
+							{{ doctor.name }}
+						</td>
+						<td>
+							<a href="/detailInformation/{{ doctor.userName}}/">点击查看医生详细信息</a>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="span2">
+		</div>
+	</div>
+	{% endif %}
+
+	<footer>
+			<p>
+				Self-illness-registration------自助预约挂号系统
+			</p>
+			<p>
+				地址：哈尔滨市南岗区西大直街92号
+			</p>
+	</footer>
+</div>
+</body>
+</html>

@@ -1,17 +1,29 @@
 <html>
 <head>
+<meta charset = "utf-8">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
 <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
 <title>SIR-医生列表</title>
 </head>
+<style type="text/css">
+	footer {
+  border-top: 1px solid #ddd;
+  text-align: center;
+  position: absolute; 
+	bottom: 0; 
+	width: 100%; 
+	height: 60px;/*脚部的高度*/ 
+	clear:both;
+}
+</style>
+<link href = "/static/css/main.css" rel="stylesheet" type="text/css"/ >
 <body>
+<p class="text-right text-info">欢迎您：<a href="/patientHome/">{{login.userName}}</a>
+	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+	<a href="/exit/">退出</a></p>
 
-<table> <tr><td>欢迎您：<a href="/patientHome/{{login.userName}}/">{{login.userName}}</a></td>
-	<td> &nbsp &nbsp &nbsp &nbsp &nbsp</td> 
-	<td><a href="/exit/">退出</a></td>
-</tr></table>
 
 <div class="container-fluid">
 	<div class="row-fluid">
@@ -41,7 +53,7 @@
 					<a href="/appointManage/">预约管理</a>
 				</li>
 				<li>
-					<a href="#">最新资讯</a>
+					<a href="/news1/">最新资讯</a>
 				</li>
 				<li>
 					<a href="/about/">关于</a>
@@ -50,67 +62,65 @@
 		</div>
 	</div>
 
-	{%if string%}
-        <p>{{string}}</p>
-    {%endif%}
+		{%if string%}
+	        <p>{{string}}</p>
+	    {%endif%}
 
-    {% if errors %}
-        {% for error in errors %}
-            <li>{{error}}</li>
-        {% endfor %}
-    {% endif %}
-	<div class="row-fluid">
-		<div class="span7">
+	    {% if errors %}
+	        {% for error in errors %}
+	            <li>{{error}}</li>
+	        {% endfor %}
+	    {% endif %}
+	    <p><a href="{{URL}}">返回操作界面</a></p>
+		<div class="row-fluid">
+			<div class="span4">
+			</div>
+			<div class="span8">
 
-			{%if errors1 %}
-            	<li>请输入医生姓名</li>
-        	{% endif %}
-			<form name="input" action="/demandByDoctor/" method="post">
-				按医生查询: <input type="text" name="doctorName">
-				<input type="submit" value="点击查询">
-				<a href="/demandAllDoctor/">所有医生</a>
-			<tr>
-			</form>
+				{%if errors1 %}
+	            	<li>请输入医生姓名</li>
+	        	{% endif %}
+				<form name="input" action="/demandByDoctor/" method="post">
+					按医生查询: <input type="text" name="doctorName">
+					<input type = "hidden" value = {{login.userName}} name="patientName">
+					<input type="submit" value="点击查询" class="button">
+					<a href="/demandAllDoctor/">所有医生</a>
+				<tr>
+				</form>
 
-			<form name="input" action="/demandByDivision/" method="post">
-				按科室查询: 
-					<select class = "txt-s" size = "1" name = "divisionType">
-                        <option value = "00000" selected = "selected">---无---</option>
-                        	{%for division in allDivisionList%}
-                        		<option value = {{division.divisionID}}>{{division.name}}</option>
-                        	{%endfor%}   
-                    </select>
-				<input type="submit" value="点击查询">
-			</form>
+				<form name="input" action="/demandByDivision/" method="post">
+					按科室查询: 
+						<select class = "txt-s" size = "1" name = "divisionType">
+	                        <option value = "00000" selected = "selected">---无---</option>
+	                        	{%for division in allDivisionList%}
+	                        		<option value = {{division.divisionID}}>{{division.name}}</option>
+	                        	{%endfor%}   
+	                    </select>
+	                    <input type = "hidden" value = {{login.userName}} name="patientName">
+					<input type="submit" value="点击查询" class="button">
+				</form>
 
-			{%if noEnter %}
-                	<li>请输入疾病姓名</li>
-            {%elif noIllness%}
-            		<li>你搜索的疾病不存在<li>
-            {% endif %}
-			<form name="input" action="/demandByIllness/" method="post">
-				按疾病查询: <input type="text" name="illnessName">
-				<input type="submit" value="点击搜索">
-				<a href="/#/">所有疾病</a>
-			</form>
-
-			<a href="{{URL}}">返回操作界面</a>
-			<!-- <input type="button" value="返回操作界面" class="btn" onclick="window.open('/{{URL}}/')" 
-				style = "width:120px;height:40px;font-size:15px;font-weight:bold;color:blue"/> -->
+				{%if noEnter %}
+	                	<li>请输入疾病姓名</li>
+	            {%elif noIllness%}
+	            		<li>你搜索的疾病不存在<li>
+	            {% endif %}
+				<form name="input" action="/demandByIllness/" method="post">
+					按疾病查询: <input type="text" name="illnessName">
+					<input type = "hidden" value = {{login.userName}} name="patientName">
+					<input type="submit" value="点击查询" class="button">
+				</form>
+			</div>
 		</div>
-	</div>
-	
-	<hr/>
-	<div class="row-fluid">
-		<div class="span12">
-			<h2 align="center">
+	</center>
+	<footer>
+			<p>
 				Self-illness-registration------自助预约挂号系统
-			</h2>
-			<p style="text-align:center">
+			</p>
+			<p>
 				地址：哈尔滨市南岗区西大直街92号
 			</p>
-		</div>
-	</div>
+	</footer>
 </div>
 </body>
 </html>
